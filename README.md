@@ -14,6 +14,15 @@ We sequence this trio with Illumina Novaseq, 10x Genomics Chromium, PacBio, Oxfo
 
 We apply read-based phasing WhatsHap (Martin et al. 2018) with pedigree-phasing algorithm (Garg et al. 2018)
 
+
+### Results
+
+#### Phasing to resolve SNV calling
+
+We reanalyse phased SNV data looking for unrecognized variants.
+
+
+
 ### References
 
 ```
