@@ -1,0 +1,377 @@
+INFO  10:11:19,862 HelpFormatter - --------------------------------------------------------------------------------- 
+INFO  10:11:19,863 HelpFormatter - The Genome Analysis Toolkit (GATK) v3.4-46-gbc02625, Compiled 2015/07/09 17:38:12 
+INFO  10:11:19,864 HelpFormatter - Copyright (c) 2010 The Broad Institute 
+INFO  10:11:19,864 HelpFormatter - For support and documentation go to http://www.broadinstitute.org/gatk 
+INFO  10:11:19,867 HelpFormatter - Program Args: -R /ifs/data/lib/genomes/human/GRCh38/hs_ref_GRCh38.p2_all_contigs.fa -T HaplotypeCaller -I /ifs/data/research/novaseq/genomes/old_samples/BvB41_child/remapping-040918/BvB41_child/BvB41_child.bam -o /ifs/data/research/novaseq/genomes/old_samples/BvB41_child/remapping-040918/calling-110918/BvB41_child.haplotypecaller.vcf 
+INFO  10:11:19,871 HelpFormatter - Executing as kevin@node09 on Linux 3.10.0-514.26.2.el7.x86_64 amd64; Java HotSpot(TM) 64-Bit Server VM 1.8.0_65-b17. 
+INFO  10:11:19,871 HelpFormatter - Date/Time: 2018/11/12 10:11:19 
+INFO  10:11:19,871 HelpFormatter - --------------------------------------------------------------------------------- 
+INFO  10:11:19,871 HelpFormatter - --------------------------------------------------------------------------------- 
+INFO  10:11:20,233 GenomeAnalysisEngine - Strictness is SILENT 
+INFO  10:11:20,317 GenomeAnalysisEngine - Downsampling Settings: Method: BY_SAMPLE, Target Coverage: 500 
+INFO  10:11:20,323 SAMDataSource$SAMReaders - Initializing SAMRecords in serial 
+INFO  10:11:20,371 SAMDataSource$SAMReaders - Done initializing BAM readers: total time 0.05 
+INFO  10:11:20,379 HCMappingQualityFilter - Filtering out reads with MAPQ < 20 
+INFO  10:11:20,435 GenomeAnalysisEngine - Preparing for traversal over 1 BAM files 
+INFO  10:11:20,630 GenomeAnalysisEngine - Done preparing for traversal 
+INFO  10:11:20,630 ProgressMeter - [INITIALIZATION COMPLETE; STARTING PROCESSING] 
+INFO  10:11:20,630 ProgressMeter -                 |      processed |    time |         per 1M |           |   total | remaining 
+INFO  10:11:20,631 ProgressMeter -        Location | active regions | elapsed | active regions | completed | runtime |   runtime 
+INFO  10:11:20,631 HaplotypeCaller - Disabling physical phasing, which is supported only for reference-model confidence output 
+INFO  10:11:20,711 StrandBiasTest - SAM/BAM data was found. Attempting to use read data to calculate strand bias annotations values. 
+INFO  10:11:20,711 StrandBiasTest - SAM/BAM data was found. Attempting to use read data to calculate strand bias annotations values. 
+INFO  10:11:20,723 HaplotypeCaller - Using global mismapping rate of 45 => -4.5 in log10 likelihood units 
+Using AVX accelerated implementation of PairHMM
+INFO  10:11:23,194 VectorLoglessPairHMM - libVectorLoglessPairHMM unpacked successfully from GATK jar file 
+INFO  10:11:23,194 VectorLoglessPairHMM - Using vectorized implementation of PairHMM 
+WARN  10:11:23,430 HaplotypeScore - Annotation will not be calculated, must be called from UnifiedGenotyper 
+WARN  10:11:23,430 InbreedingCoeff - Annotation will not be calculated, must provide a valid PED file (-ped) from the command line. 
+INFO  10:11:50,633 ProgressMeter -     chr1:738010              0.0    30.0 s           49.6 w        0.0%    35.0 h      35.0 h 
+INFO  10:12:50,635 ProgressMeter -    chr1:1716254              0.0    90.0 s          148.8 w        0.1%    45.2 h      45.1 h 
+INFO  10:13:50,636 ProgressMeter -    chr1:2653605              0.0     2.5 m          248.0 w        0.1%    48.7 h      48.6 h 
+INFO  10:14:50,638 ProgressMeter -    chr1:2753226              0.0     3.5 m          347.2 w        0.1%    65.7 h      65.6 h 
+INFO  10:15:50,639 ProgressMeter -    chr1:3836096              0.0     4.5 m          446.4 w        0.1%    60.6 h      60.5 h 
+INFO  10:16:50,641 ProgressMeter -    chr1:4894099              0.0     5.5 m          545.7 w        0.2%    58.1 h      58.0 h 
+WARN  10:17:09,391 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:5276699 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  10:17:50,642 ProgressMeter -    chr1:5803156              0.0     6.5 m          644.9 w        0.2%    57.9 h      57.8 h 
+INFO  10:18:50,644 ProgressMeter -    chr1:7309606              0.0     7.5 m          744.1 w        0.2%    53.0 h      52.9 h 
+INFO  10:19:50,645 ProgressMeter -    chr1:8323719              0.0     8.5 m          843.3 w        0.3%    52.8 h      52.6 h 
+INFO  10:20:50,647 ProgressMeter -    chr1:9786999              0.0     9.5 m          942.5 w        0.3%    50.1 h      50.0 h 
+INFO  10:21:50,648 ProgressMeter -   chr1:11205988              0.0    10.5 m         1041.7 w        0.4%    48.4 h      48.2 h 
+INFO  10:22:50,655 ProgressMeter -   chr1:12574136              0.0    11.5 m         1140.9 w        0.4%    47.2 h      47.1 h 
+INFO  10:23:50,657 ProgressMeter -   chr1:12938958              0.0    12.5 m         1240.1 w        0.4%    49.9 h      49.7 h 
+INFO  10:24:50,659 ProgressMeter -   chr1:13320061              0.0    13.5 m         1339.3 w        0.4%    52.4 h      52.1 h 
+INFO  10:25:50,661 ProgressMeter -   chr1:14032965              0.0    14.5 m         1438.5 w        0.5%    53.4 h      53.1 h 
+INFO  10:26:50,663 ProgressMeter -   chr1:15326508              0.0    15.5 m         1537.8 w        0.5%    52.2 h      52.0 h 
+INFO  10:27:50,665 ProgressMeter -   chr1:16264093              0.0    16.5 m         1637.0 w        0.5%    52.4 h      52.1 h 
+INFO  10:28:50,666 ProgressMeter -   chr1:16588416              0.0    17.5 m         1736.2 w        0.5%    54.5 h      54.2 h 
+WARN  10:28:54,466 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:16599508 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+WARN  10:29:19,803 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:16616293 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+WARN  10:29:40,387 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:16624960 has 12 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+WARN  10:29:46,697 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:16629357 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  10:29:50,667 ProgressMeter -   chr1:16631851              0.0    18.5 m         1835.4 w        0.5%    57.5 h      57.2 h 
+WARN  10:30:40,718 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:16716381 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  10:30:50,672 ProgressMeter -   chr1:16726998              0.0    19.5 m         1934.6 w        0.5%    60.2 h      59.9 h 
+INFO  10:31:50,673 ProgressMeter -   chr1:16924002              0.0    20.5 m         2033.8 w        0.5%    62.6 h      62.2 h 
+INFO  10:32:50,679 ProgressMeter -   chr1:17837915              0.0    21.5 m         2133.0 w        0.6%    62.3 h      61.9 h 
+INFO  10:33:50,680 ProgressMeter -   chr1:19109787              0.0    22.5 m         2232.2 w        0.6%    60.8 h      60.5 h 
+INFO  10:34:50,682 ProgressMeter -   chr1:20377118              0.0    23.5 m         2331.4 w        0.7%    59.6 h      59.2 h 
+INFO  10:35:50,683 ProgressMeter -   chr1:21474568              0.0    24.5 m         2430.6 w        0.7%    58.9 h      58.5 h 
+INFO  10:36:50,684 ProgressMeter -   chr1:22460761              0.0    25.5 m         2529.9 w        0.7%    58.7 h      58.2 h 
+WARN  10:37:00,895 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:22741679 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  10:37:50,686 ProgressMeter -   chr1:23890596              0.0    26.5 m         2629.1 w        0.8%    57.3 h      56.9 h 
+INFO  10:38:50,687 ProgressMeter -   chr1:24828536              0.0    27.5 m         2728.3 w        0.8%    57.2 h      56.8 h 
+INFO  10:39:50,689 ProgressMeter -   chr1:26257262              0.0    28.5 m         2827.5 w        0.8%    56.1 h      55.6 h 
+INFO  10:40:50,690 ProgressMeter -   chr1:27854545              0.0    29.5 m         2926.7 w        0.9%    54.7 h      54.2 h 
+INFO  10:41:50,692 ProgressMeter -   chr1:29413216              0.0    30.5 m         3025.9 w        0.9%    53.6 h      53.1 h 
+INFO  10:42:50,697 ProgressMeter -   chr1:30718773              0.0    31.5 m         3125.1 w        1.0%    53.0 h      52.5 h 
+INFO  10:43:50,698 ProgressMeter -   chr1:31954172              0.0    32.5 m         3224.3 w        1.0%    52.5 h      52.0 h 
+INFO  10:44:50,700 ProgressMeter -   chr1:33590946              0.0    33.5 m         3323.5 w        1.1%    51.5 h      51.0 h 
+INFO  10:45:50,701 ProgressMeter -   chr1:35097507              0.0    34.5 m         3422.7 w        1.1%    50.8 h      50.2 h 
+INFO  10:46:50,703 ProgressMeter -   chr1:36767394              0.0    35.5 m         3521.9 w        1.2%    49.9 h      49.3 h 
+INFO  10:47:50,704 ProgressMeter -   chr1:38394179              0.0    36.5 m         3621.2 w        1.2%    49.1 h      48.5 h 
+INFO  10:48:50,705 ProgressMeter -   chr1:39686359              0.0    37.5 m         3720.4 w        1.3%    48.8 h      48.2 h 
+WARN  10:49:40,684 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:40944890 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  10:49:50,707 ProgressMeter -   chr1:41171858              0.0    38.5 m         3819.6 w        1.3%    48.3 h      47.7 h 
+INFO  10:50:50,708 ProgressMeter -   chr1:42650698              0.0    39.5 m         3918.8 w        1.4%    47.8 h      47.2 h 
+INFO  10:51:50,710 ProgressMeter -   chr1:44194069              0.0    40.5 m         4018.0 w        1.4%    47.3 h      46.7 h 
+INFO  10:52:50,715 ProgressMeter -   chr1:45776953              0.0    41.5 m         4117.2 w        1.5%    46.8 h      46.1 h 
+INFO  10:53:50,717 ProgressMeter -   chr1:47086721              0.0    42.5 m         4216.4 w        1.5%    46.6 h      45.9 h 
+INFO  10:54:50,725 ProgressMeter -   chr1:48423919              0.0    43.5 m         4315.6 w        1.6%    46.4 h      45.7 h 
+INFO  10:55:50,726 ProgressMeter -   chr1:50472105              0.0    44.5 m         4414.8 w        1.6%    45.5 h      44.8 h 
+INFO  10:56:50,728 ProgressMeter -   chr1:52662678              0.0    45.5 m         4514.1 w        1.7%    44.6 h      43.9 h 
+WARN  10:56:55,784 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:52773627 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  10:57:50,729 ProgressMeter -   chr1:54223477              0.0    46.5 m         4613.3 w        1.7%    44.3 h      43.5 h 
+WARN  10:57:53,757 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:54276608 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  10:58:50,730 ProgressMeter -   chr1:55410647              0.0    47.5 m         4712.5 w        1.8%    44.3 h      43.5 h 
+INFO  10:59:50,734 ProgressMeter -   chr1:56912160              0.0    48.5 m         4811.7 w        1.8%    44.0 h      43.2 h 
+INFO  11:00:50,736 ProgressMeter -   chr1:58447747              0.0    49.5 m         4910.9 w        1.9%    43.8 h      42.9 h 
+INFO  11:01:50,737 ProgressMeter -   chr1:60109515              0.0    50.5 m         5010.1 w        1.9%    43.4 h      42.6 h 
+INFO  11:02:50,743 ProgressMeter -   chr1:61728314              0.0    51.5 m         5109.3 w        2.0%    43.1 h      42.2 h 
+INFO  11:03:50,744 ProgressMeter -   chr1:62871558              0.0    52.5 m         5208.5 w        2.0%    43.1 h      42.3 h 
+INFO  11:04:50,745 ProgressMeter -   chr1:64299085              0.0    53.5 m         5307.7 w        2.1%    43.0 h      42.1 h 
+INFO  11:05:50,750 ProgressMeter -   chr1:65312602              0.0    54.5 m         5406.9 w        2.1%    43.1 h      42.2 h 
+INFO  11:06:50,751 ProgressMeter -   chr1:66679668              0.0    55.5 m         5506.2 w        2.2%    43.0 h      42.1 h 
+INFO  11:07:50,753 ProgressMeter -   chr1:68178994              0.0    56.5 m         5605.4 w        2.2%    42.8 h      41.9 h 
+INFO  11:08:50,754 ProgressMeter -   chr1:70002304              0.0    57.5 m         5704.6 w        2.3%    42.4 h      41.5 h 
+INFO  11:09:50,755 ProgressMeter -   chr1:71685681              0.0    58.5 m         5803.8 w        2.3%    42.2 h      41.2 h 
+INFO  11:10:50,757 ProgressMeter -   chr1:73180365              0.0    59.5 m         5903.0 w        2.4%    42.0 h      41.0 h 
+WARN  11:11:02,276 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:73444721 has 9 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  11:11:50,758 ProgressMeter -   chr1:74701669              0.0    60.5 m         6002.2 w        2.4%    41.8 h      40.8 h 
+INFO  11:12:50,764 ProgressMeter -   chr1:76107307              0.0    61.5 m         6101.4 w        2.5%    41.7 h      40.7 h 
+INFO  11:13:50,766 ProgressMeter -   chr1:77613324              0.0    62.5 m         6200.6 w        2.5%    41.6 h      40.6 h 
+INFO  11:14:50,767 ProgressMeter -   chr1:79129243              0.0    63.5 m         6299.8 w        2.6%    41.5 h      40.4 h 
+INFO  11:15:50,768 ProgressMeter -   chr1:80775109              0.0    64.5 m         6399.0 w        2.6%    41.3 h      40.2 h 
+WARN  11:16:43,313 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:81993087 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  11:16:50,770 ProgressMeter -   chr1:82180501              0.0    65.5 m         6498.2 w        2.7%    41.2 h      40.1 h 
+INFO  11:17:50,771 ProgressMeter -   chr1:83514344              0.0    66.5 m         6597.5 w        2.7%    41.1 h      40.0 h 
+INFO  11:18:50,772 ProgressMeter -   chr1:84961898              0.0    67.5 m         6696.7 w        2.7%    41.0 h      39.9 h 
+INFO  11:19:50,775 ProgressMeter -   chr1:86191935              0.0    68.5 m         6795.9 w        2.8%    41.1 h      39.9 h 
+INFO  11:20:50,776 ProgressMeter -   chr1:88047302              0.0    69.5 m         6895.1 w        2.8%    40.8 h      39.6 h 
+WARN  11:20:56,050 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:88190738 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  11:21:50,778 ProgressMeter -   chr1:89721008              0.0    70.5 m         6994.3 w        2.9%    40.6 h      39.4 h 
+INFO  11:22:50,783 ProgressMeter -   chr1:91300920              0.0    71.5 m         7093.5 w        2.9%    40.5 h      39.3 h 
+WARN  11:23:17,662 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:91800330 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  11:23:50,785 ProgressMeter -   chr1:92405025              0.0    72.5 m         7192.7 w        3.0%    40.5 h      39.3 h 
+INFO  11:24:50,786 ProgressMeter -   chr1:93852250              0.0    73.5 m         7291.9 w        3.0%    40.5 h      39.2 h 
+INFO  11:25:50,787 ProgressMeter -   chr1:95349541              0.0    74.5 m         7391.1 w        3.1%    40.4 h      39.1 h 
+WARN  11:26:16,303 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:96005203 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  11:26:50,789 ProgressMeter -   chr1:96892802              0.0    75.5 m         7490.3 w        3.1%    40.3 h      39.0 h 
+INFO  11:27:50,790 ProgressMeter -   chr1:98656871              0.0    76.5 m         7589.6 w        3.2%    40.1 h      38.8 h 
+INFO  11:28:50,792 ProgressMeter -  chr1:100196784              0.0    77.5 m         7688.8 w        3.2%    40.0 h      38.7 h 
+INFO  11:29:50,793 ProgressMeter -  chr1:101686329              0.0    78.5 m         7788.0 w        3.3%    39.9 h      38.6 h 
+WARN  11:30:01,370 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:101966317 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  11:30:50,795 ProgressMeter -  chr1:103104934              0.0    79.5 m         7887.2 w        3.3%    39.8 h      38.5 h 
+INFO  11:31:50,796 ProgressMeter -  chr1:104742781              0.0    80.5 m         7986.4 w        3.4%    39.7 h      38.4 h 
+INFO  11:32:50,801 ProgressMeter -  chr1:105684617              0.0    81.5 m         8085.6 w        3.4%    39.8 h      38.5 h 
+INFO  11:33:50,804 ProgressMeter -  chr1:107402046              0.0    82.5 m         8184.8 w        3.5%    39.7 h      38.3 h 
+INFO  11:34:50,805 ProgressMeter -  chr1:108805647              0.0    83.5 m         8284.0 w        3.5%    39.6 h      38.3 h 
+INFO  11:35:50,806 ProgressMeter -  chr1:110211110              0.0    84.5 m         8383.2 w        3.6%    39.6 h      38.2 h 
+INFO  11:36:50,808 ProgressMeter -  chr1:111633272              0.0    85.5 m         8482.4 w        3.6%    39.6 h      38.1 h 
+INFO  11:37:50,809 ProgressMeter -  chr1:112992288              0.0    86.5 m         8581.6 w        3.6%    39.5 h      38.1 h 
+INFO  11:38:50,810 ProgressMeter -  chr1:114458874              0.0    87.5 m         8680.9 w        3.7%    39.5 h      38.0 h 
+WARN  11:39:14,451 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:115026279 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  11:39:50,812 ProgressMeter -  chr1:115812964              0.0    88.5 m         8780.1 w        3.7%    39.5 h      38.0 h 
+WARN  11:39:59,775 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:115993428 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  11:40:50,813 ProgressMeter -  chr1:117419635              0.0    89.5 m         8879.3 w        3.8%    39.4 h      37.9 h 
+INFO  11:41:50,815 ProgressMeter -  chr1:119096923              0.0    90.5 m         8978.5 w        3.8%    39.3 h      37.7 h 
+INFO  11:42:50,820 ProgressMeter -  chr1:120958319              0.0    91.5 m         9077.7 w        3.9%    39.1 h      37.6 h 
+INFO  11:43:50,821 ProgressMeter -  chr1:121939109              0.0    92.5 m         9176.9 w        3.9%    39.2 h      37.6 h 
+INFO  11:44:50,823 ProgressMeter -  chr1:124877202              0.0    93.5 m         9276.1 w        4.0%    38.7 h      37.1 h 
+INFO  11:45:50,824 ProgressMeter -  chr1:125081498              0.0    94.5 m         9375.3 w        4.0%    39.0 h      37.5 h 
+INFO  11:46:50,825 ProgressMeter -  chr1:125167982              0.0    95.5 m         9474.5 w        4.0%    39.4 h      37.8 h 
+INFO  11:47:50,826 ProgressMeter -  chr1:125179484              0.0    96.5 m         9573.7 w        4.0%    39.8 h      38.2 h 
+INFO  11:48:50,828 ProgressMeter -  chr1:125180120              0.0    97.5 m         9672.9 w        4.0%    40.2 h      38.6 h 
+INFO  11:49:50,829 ProgressMeter -  chr1:125180686              0.0    98.5 m         9772.2 w        4.0%    40.7 h      39.0 h 
+INFO  11:50:50,830 ProgressMeter -  chr1:125181592              0.0    99.5 m         9871.4 w        4.0%    41.1 h      39.4 h 
+INFO  11:51:50,834 ProgressMeter -  chr1:125182301              0.0   100.5 m         9970.6 w        4.0%    41.5 h      39.8 h 
+INFO  11:52:50,840 ProgressMeter -  chr1:125183358              0.0   101.5 m        10069.8 w        4.0%    41.9 h      40.2 h 
+INFO  11:53:50,841 ProgressMeter -  chr1:125184139              0.0   102.5 m        10169.0 w        4.0%    42.3 h      40.6 h 
+INFO  11:54:50,842 ProgressMeter -  chr1:143185545              0.0   103.5 m        10268.2 w        4.6%    37.3 h      35.6 h 
+INFO  11:55:50,846 ProgressMeter -  chr1:143192786              0.0   104.5 m        10367.4 w        4.6%    37.7 h      36.0 h 
+INFO  11:56:50,847 ProgressMeter -  chr1:143193237              0.0   105.5 m        10466.6 w        4.6%    38.1 h      36.3 h 
+INFO  11:57:50,848 ProgressMeter -  chr1:143193897              0.0   106.5 m        10565.8 w        4.6%    38.4 h      36.6 h 
+INFO  11:58:50,850 ProgressMeter -  chr1:143195626              0.0   107.5 m        10665.0 w        4.6%    38.8 h      37.0 h 
+INFO  11:59:50,852 ProgressMeter -  chr1:143202823              0.0   108.5 m        10764.3 w        4.6%    39.1 h      37.3 h 
+INFO  12:00:50,853 ProgressMeter -  chr1:143203143              0.0   109.5 m        10863.5 w        4.6%    39.5 h      37.7 h 
+INFO  12:01:50,858 ProgressMeter -  chr1:143213308              0.0   110.5 m        10962.7 w        4.6%    39.9 h      38.0 h 
+INFO  12:02:50,863 ProgressMeter -  chr1:143213685              0.0   111.5 m        11061.9 w        4.6%    40.2 h      38.4 h 
+INFO  12:03:50,864 ProgressMeter -  chr1:143215332              0.0   112.5 m        11161.1 w        4.6%    40.6 h      38.7 h 
+INFO  12:04:50,866 ProgressMeter -  chr1:143216222              0.0   113.5 m        11260.3 w        4.6%    40.9 h      39.1 h 
+INFO  12:05:50,867 ProgressMeter -  chr1:143217477              0.0   114.5 m        11359.5 w        4.6%    41.3 h      39.4 h 
+INFO  12:06:50,875 ProgressMeter -  chr1:143217699              0.0   115.5 m        11458.7 w        4.6%    41.7 h      39.7 h 
+INFO  12:07:50,877 ProgressMeter -  chr1:143218330              0.0   116.5 m        11557.9 w        4.6%    42.0 h      40.1 h 
+INFO  12:08:50,878 ProgressMeter -  chr1:143218950              0.0   117.5 m        11657.2 w        4.6%    42.4 h      40.4 h 
+INFO  12:09:50,880 ProgressMeter -  chr1:143219832              0.0   118.5 m        11756.4 w        4.6%    42.7 h      40.8 h 
+INFO  12:10:50,881 ProgressMeter -  chr1:143220078              0.0   119.5 m        11855.6 w        4.6%    43.1 h      41.1 h 
+INFO  12:11:50,882 ProgressMeter -  chr1:143220563              0.0     2.0 h        11954.8 w        4.6%    43.5 h      41.5 h 
+INFO  12:12:50,888 ProgressMeter -  chr1:143221009              0.0     2.0 h        12054.0 w        4.6%    43.8 h      41.8 h 
+INFO  12:13:50,892 ProgressMeter -  chr1:143221867              0.0     2.0 h        12153.2 w        4.6%    44.2 h      42.1 h 
+INFO  12:14:50,893 ProgressMeter -  chr1:143222807              0.0     2.1 h        12252.4 w        4.6%    44.5 h      42.5 h 
+INFO  12:15:50,895 ProgressMeter -  chr1:143228396              0.0     2.1 h        12351.6 w        4.6%    44.9 h      42.8 h 
+INFO  12:16:50,896 ProgressMeter -  chr1:143232183              0.0     2.1 h        12450.8 w        4.6%    45.3 h      43.2 h 
+INFO  12:17:50,897 ProgressMeter -  chr1:143236121              0.0     2.1 h        12550.0 w        4.6%    45.6 h      43.5 h 
+INFO  12:18:50,898 ProgressMeter -  chr1:143239667              0.0     2.1 h        12649.3 w        4.6%    46.0 h      43.9 h 
+INFO  12:19:50,900 ProgressMeter -  chr1:143239932              0.0     2.1 h        12748.5 w        4.6%    46.3 h      44.2 h 
+INFO  12:20:50,904 ProgressMeter -  chr1:143240149              0.0     2.2 h        12847.7 w        4.6%    46.7 h      44.5 h 
+INFO  12:21:50,906 ProgressMeter -  chr1:143240713              0.0     2.2 h        12946.9 w        4.6%    47.1 h      44.9 h 
+INFO  12:22:50,912 ProgressMeter -  chr1:143252212              0.0     2.2 h        13046.1 w        4.6%    47.4 h      45.2 h 
+INFO  12:23:50,913 ProgressMeter -  chr1:143253232              0.0     2.2 h        13145.3 w        4.6%    47.8 h      45.6 h 
+INFO  12:24:50,914 ProgressMeter -  chr1:143255054              0.0     2.2 h        13244.5 w        4.6%    48.1 h      45.9 h 
+INFO  12:25:50,918 ProgressMeter -  chr1:143256053              0.0     2.2 h        13343.7 w        4.6%    48.5 h      46.3 h 
+INFO  12:26:50,919 ProgressMeter -  chr1:143262390              0.0     2.3 h        13442.9 w        4.6%    48.9 h      46.6 h 
+INFO  12:27:50,921 ProgressMeter -  chr1:143262826              0.0     2.3 h        13542.1 w        4.6%    49.2 h      46.9 h 
+INFO  12:28:50,922 ProgressMeter -  chr1:143263006              0.0     2.3 h        13641.4 w        4.6%    49.6 h      47.3 h 
+INFO  12:29:50,926 ProgressMeter -  chr1:143263859              0.0     2.3 h        13740.6 w        4.6%    49.9 h      47.6 h 
+INFO  12:30:50,953 ProgressMeter -  chr1:143264465              0.0     2.3 h        13839.8 w        4.6%    50.3 h      48.0 h 
+INFO  12:31:50,954 ProgressMeter -  chr1:143264865              0.0     2.3 h        13939.0 w        4.6%    50.7 h      48.3 h 
+INFO  12:32:50,960 ProgressMeter -  chr1:143266804              0.0     2.4 h        14038.2 w        4.6%    51.0 h      48.7 h 
+INFO  12:33:50,961 ProgressMeter -  chr1:143284890              0.0     2.4 h        14137.5 w        4.6%    51.4 h      49.0 h 
+INFO  12:34:50,963 ProgressMeter -  chr1:144104588              0.0     2.4 h        14236.7 w        4.6%    51.4 h      49.1 h 
+WARN  12:35:38,281 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:146011164 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  12:35:50,964 ProgressMeter -  chr1:146567693              0.0     2.4 h        14335.9 w        4.7%    50.9 h      48.5 h 
+INFO  12:36:50,965 ProgressMeter -  chr1:148228053              0.0     2.4 h        14435.1 w        4.8%    50.7 h      48.3 h 
+INFO  12:37:50,966 ProgressMeter -  chr1:150431828              0.0     2.4 h        14534.3 w        4.9%    50.3 h      47.9 h 
+WARN  12:38:21,626 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:151109364 has 13 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  12:38:50,968 ProgressMeter -  chr1:151835155              0.0     2.5 h        14633.5 w        4.9%    50.2 h      47.7 h 
+INFO  12:39:50,969 ProgressMeter -  chr1:153336720              0.0     2.5 h        14732.7 w        4.9%    50.0 h      47.6 h 
+INFO  12:40:50,970 ProgressMeter -  chr1:154766442              0.0     2.5 h        14831.9 w        5.0%    49.9 h      47.4 h 
+INFO  12:41:50,972 ProgressMeter -  chr1:156305512              0.0     2.5 h        14931.1 w        5.0%    49.7 h      47.2 h 
+INFO  12:42:50,977 ProgressMeter -  chr1:157621842              0.0     2.5 h        15030.3 w        5.1%    49.7 h      47.1 h 
+INFO  12:43:50,978 ProgressMeter -  chr1:158866364              0.0     2.5 h        15129.5 w        5.1%    49.6 h      47.1 h 
+INFO  12:44:50,980 ProgressMeter -  chr1:160367444              0.0     2.6 h        15228.8 w        5.2%    49.5 h      46.9 h 
+WARN  12:45:50,211 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:161442852 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  12:45:50,981 ProgressMeter -  chr1:161458138              0.0     2.6 h        15250.3 w        5.2%    49.4 h      46.9 h 
+INFO  12:46:50,982 ProgressMeter -  chr1:162498091              0.0     2.6 h        15250.3 w        5.2%    49.4 h      46.8 h 
+WARN  12:47:18,389 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:163147918 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  12:47:50,983 ProgressMeter -  chr1:163811378              0.0     2.6 h        15250.3 w        5.3%    49.4 h      46.7 h 
+INFO  12:48:50,984 ProgressMeter -  chr1:165291934              0.0     2.6 h        15250.3 w        5.3%    49.2 h      46.6 h 
+INFO  12:49:50,986 ProgressMeter -  chr1:166578308              0.0     2.6 h        15250.3 w        5.4%    49.2 h      46.5 h 
+INFO  12:50:50,987 ProgressMeter -  chr1:168228107              0.0     2.7 h        15250.3 w        5.4%    49.0 h      46.3 h 
+INFO  12:51:50,988 ProgressMeter -  chr1:169980476              0.0     2.7 h        15250.3 w        5.5%    48.8 h      46.1 h 
+INFO  12:52:50,993 ProgressMeter -  chr1:171394749              0.0     2.7 h        15250.3 w        5.5%    48.7 h      46.0 h 
+INFO  12:53:50,995 ProgressMeter -  chr1:173063126              0.0     2.7 h        15250.3 w        5.6%    48.5 h      45.8 h 
+INFO  12:54:50,996 ProgressMeter -  chr1:175268649              0.0     2.7 h        15250.3 w        5.7%    48.2 h      45.5 h 
+INFO  12:55:50,998 ProgressMeter -  chr1:176854001              0.0     2.7 h        15250.3 w        5.7%    48.1 h      45.3 h 
+INFO  12:56:50,999 ProgressMeter -  chr1:178591674              0.0     2.8 h        15250.3 w        5.8%    47.9 h      45.1 h 
+INFO  12:57:51,000 ProgressMeter -  chr1:179747719              0.0     2.8 h        15250.3 w        5.8%    47.9 h      45.1 h 
+INFO  12:58:51,003 ProgressMeter -  chr1:181214086              0.0     2.8 h        15250.3 w        5.8%    47.8 h      45.0 h 
+INFO  12:59:51,004 ProgressMeter -  chr1:182639156              0.0     2.8 h        15250.3 w        5.9%    47.7 h      44.9 h 
+INFO  13:00:51,006 ProgressMeter -  chr1:184214802              0.0     2.8 h        15250.3 w        5.9%    47.5 h      44.7 h 
+INFO  13:01:51,007 ProgressMeter -  chr1:186434506              0.0     2.8 h        15250.3 w        6.0%    47.2 h      44.4 h 
+INFO  13:02:51,012 ProgressMeter -  chr1:187745803              0.0     2.9 h        15250.3 w        6.1%    47.2 h      44.3 h 
+INFO  13:03:51,013 ProgressMeter -  chr1:188772475              0.0     2.9 h        15250.3 w        6.1%    47.2 h      44.3 h 
+INFO  13:04:51,014 ProgressMeter -  chr1:190255351              0.0     2.9 h        15250.3 w        6.1%    47.1 h      44.2 h 
+WARN  13:05:43,291 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:191600906 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  13:05:51,016 ProgressMeter -  chr1:191800404              0.0     2.9 h        15250.3 w        6.2%    47.0 h      44.1 h 
+INFO  13:06:51,017 ProgressMeter -  chr1:193681578              0.0     2.9 h        15250.3 w        6.2%    46.8 h      43.9 h 
+INFO  13:07:51,019 ProgressMeter -  chr1:194970932              0.0     2.9 h        15250.3 w        6.3%    46.8 h      43.8 h 
+INFO  13:08:51,020 ProgressMeter -  chr1:196244765              0.0     3.0 h        15250.3 w        6.3%    46.7 h      43.8 h 
+INFO  13:09:51,021 ProgressMeter -  chr1:198007602              0.0     3.0 h        15250.3 w        6.4%    46.6 h      43.6 h 
+INFO  13:10:51,023 ProgressMeter -  chr1:199822707              0.0     3.0 h        15250.3 w        6.4%    46.4 h      43.4 h 
+INFO  13:11:51,024 ProgressMeter -  chr1:201177743              0.0     3.0 h        15250.3 w        6.5%    46.4 h      43.3 h 
+INFO  13:12:51,029 ProgressMeter -  chr1:202690265              0.0     3.0 h        15250.3 w        6.5%    46.3 h      43.2 h 
+INFO  13:13:51,031 ProgressMeter -  chr1:203911947              0.0     3.0 h        15250.3 w        6.6%    46.2 h      43.2 h 
+WARN  13:14:05,212 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:204208476 has 11 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  13:14:51,032 ProgressMeter -  chr1:205414626              0.0     3.1 h        15250.3 w        6.6%    46.2 h      43.1 h 
+INFO  13:15:51,033 ProgressMeter -  chr1:207206075              0.0     3.1 h        15250.3 w        6.7%    46.0 h      42.9 h 
+INFO  13:16:51,035 ProgressMeter -  chr1:208854374              0.0     3.1 h        15250.3 w        6.7%    45.9 h      42.8 h 
+INFO  13:17:51,036 ProgressMeter -  chr1:210541415              0.0     3.1 h        15250.3 w        6.8%    45.8 h      42.7 h 
+WARN  13:18:32,035 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:211609099 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  13:18:51,037 ProgressMeter -  chr1:212014726              0.0     3.1 h        15250.3 w        6.8%    45.7 h      42.6 h 
+INFO  13:19:51,039 ProgressMeter -  chr1:213550247              0.0     3.1 h        15250.3 w        6.9%    45.6 h      42.5 h 
+INFO  13:20:51,040 ProgressMeter -  chr1:214939747              0.0     3.2 h        15250.3 w        6.9%    45.5 h      42.4 h 
+INFO  13:21:51,041 ProgressMeter -  chr1:216488761              0.0     3.2 h        15250.3 w        7.0%    45.5 h      42.3 h 
+INFO  13:22:51,046 ProgressMeter -  chr1:217978650              0.0     3.2 h        15250.3 w        7.0%    45.4 h      42.2 h 
+WARN  13:23:50,707 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:219595259 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  13:23:51,048 ProgressMeter -  chr1:219600948              0.0     3.2 h        15250.3 w        7.1%    45.3 h      42.1 h 
+INFO  13:25:01,049 ProgressMeter -  chr1:221106993              0.0     3.2 h        15250.3 w        7.1%    45.3 h      42.0 h 
+INFO  13:26:01,050 ProgressMeter -  chr1:222767165              0.0     3.2 h        15250.3 w        7.2%    45.1 h      41.9 h 
+INFO  13:27:01,052 ProgressMeter -  chr1:224045421              0.0     3.3 h        15250.3 w        7.2%    45.1 h      41.9 h 
+INFO  13:28:01,053 ProgressMeter -  chr1:225471338              0.0     3.3 h        15250.3 w        7.3%    45.1 h      41.8 h 
+INFO  13:29:01,054 ProgressMeter -  chr1:226989027              0.0     3.3 h        15250.3 w        7.3%    45.0 h      41.7 h 
+WARN  13:29:10,311 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:227168497 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+WARN  13:29:13,050 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:227198438 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  13:30:01,056 ProgressMeter -  chr1:228299446              0.0     3.3 h        15250.3 w        7.4%    45.0 h      41.6 h 
+INFO  13:31:01,057 ProgressMeter -  chr1:229743549              0.0     3.3 h        15250.3 w        7.4%    44.9 h      41.6 h 
+INFO  13:32:01,058 ProgressMeter -  chr1:231243455              0.0     3.3 h        15250.3 w        7.5%    44.8 h      41.5 h 
+INFO  13:33:01,063 ProgressMeter -  chr1:232701447              0.0     3.4 h        15250.3 w        7.5%    44.8 h      41.4 h 
+INFO  13:34:01,065 ProgressMeter -  chr1:234111943              0.0     3.4 h        15250.3 w        7.6%    44.7 h      41.3 h 
+INFO  13:35:01,066 ProgressMeter -  chr1:235292973              0.0     3.4 h        15250.3 w        7.6%    44.7 h      41.3 h 
+INFO  13:36:01,068 ProgressMeter -  chr1:236622689              0.0     3.4 h        15250.3 w        7.6%    44.7 h      41.3 h 
+WARN  13:36:16,342 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr1:236897310 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  13:37:01,069 ProgressMeter -  chr1:237588821              0.0     3.4 h        15250.3 w        7.7%    44.7 h      41.3 h 
+INFO  13:38:01,070 ProgressMeter -  chr1:238571504              0.0     3.4 h        15250.3 w        7.7%    44.8 h      41.3 h 
+INFO  13:39:01,072 ProgressMeter -  chr1:239998089              0.0     3.5 h        15250.3 w        7.7%    44.7 h      41.2 h 
+INFO  13:40:01,073 ProgressMeter -  chr1:241064534              0.0     3.5 h        15250.3 w        7.8%    44.7 h      41.2 h 
+INFO  13:41:01,074 ProgressMeter -  chr1:242136527              0.0     3.5 h        15250.3 w        7.8%    44.7 h      41.2 h 
+INFO  13:42:01,076 ProgressMeter -  chr1:243176841              0.0     3.5 h        15250.3 w        7.8%    44.8 h      41.2 h 
+INFO  13:43:01,081 ProgressMeter -  chr1:244716515              0.0     3.5 h        15250.3 w        7.9%    44.7 h      41.2 h 
+INFO  13:44:01,082 ProgressMeter -  chr1:245922967              0.0     3.5 h        15250.3 w        7.9%    44.7 h      41.1 h 
+INFO  13:45:01,083 ProgressMeter -  chr1:246962028              0.0     3.6 h        15250.3 w        8.0%    44.7 h      41.1 h 
+INFO  13:46:01,085 ProgressMeter -  chr1:248230530              0.0     3.6 h        15250.3 w        8.0%    44.7 h      41.1 h 
+INFO  13:47:01,086 ProgressMeter -  chr1:248698872              0.0     3.6 h        15250.3 w        8.0%    44.8 h      41.2 h 
+INFO  13:48:01,087 ProgressMeter -     chr2:911069     2.48956422E8     3.6 h           52.0 s        8.1%    44.8 h      41.2 h 
+INFO  13:49:01,089 ProgressMeter -    chr2:1744153     2.48956422E8     3.6 h           52.0 s        8.1%    44.9 h      41.2 h 
+WARN  13:49:36,377 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr2:2820420 has 8 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  13:50:01,090 ProgressMeter -    chr2:3276251     2.48956422E8     3.6 h           52.0 s        8.1%    44.8 h      41.1 h 
+INFO  13:51:01,091 ProgressMeter -    chr2:4580498     2.48956422E8     3.7 h           52.0 s        8.2%    44.8 h      41.1 h 
+INFO  13:52:01,093 ProgressMeter -    chr2:5963136     2.48956422E8     3.7 h           53.0 s        8.2%    44.7 h      41.0 h 
+INFO  13:53:01,098 ProgressMeter -    chr2:7631754     2.48956422E8     3.7 h           53.0 s        8.3%    44.6 h      40.9 h 
+INFO  13:54:01,099 ProgressMeter -    chr2:9274944     2.48956422E8     3.7 h           53.0 s        8.3%    44.5 h      40.8 h 
+INFO  13:55:01,100 ProgressMeter -   chr2:10229327     2.48956422E8     3.7 h           53.0 s        8.4%    44.6 h      40.9 h 
+INFO  13:56:01,102 ProgressMeter -   chr2:11221222     2.48956422E8     3.7 h           54.0 s        8.4%    44.6 h      40.9 h 
+INFO  13:57:01,103 ProgressMeter -   chr2:12467734     2.48956422E8     3.8 h           54.0 s        8.4%    44.6 h      40.8 h 
+INFO  13:58:01,104 ProgressMeter -   chr2:13686235     2.48956422E8     3.8 h           54.0 s        8.5%    44.6 h      40.8 h 
+INFO  13:59:01,106 ProgressMeter -   chr2:15166542     2.48956422E8     3.8 h           54.0 s        8.5%    44.5 h      40.7 h 
+INFO  14:00:01,107 ProgressMeter -   chr2:16359064     2.48956422E8     3.8 h           55.0 s        8.6%    44.5 h      40.7 h 
+INFO  14:01:01,108 ProgressMeter -   chr2:18267361     2.48956422E8     3.8 h           55.0 s        8.6%    44.4 h      40.6 h 
+INFO  14:02:01,109 ProgressMeter -   chr2:20018626     2.48956422E8     3.8 h           55.0 s        8.7%    44.3 h      40.5 h 
+INFO  14:03:01,116 ProgressMeter -   chr2:21527431     2.48956422E8     3.9 h           55.0 s        8.7%    44.2 h      40.4 h 
+WARN  14:03:16,060 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr2:22119168 has 9 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  14:04:01,118 ProgressMeter -   chr2:23475745     2.48956422E8     3.9 h           56.0 s        8.8%    44.1 h      40.2 h 
+INFO  14:05:01,119 ProgressMeter -   chr2:24711080     2.48956422E8     3.9 h           56.0 s        8.8%    44.1 h      40.2 h 
+INFO  14:06:01,120 ProgressMeter -   chr2:26170235     2.48956422E8     3.9 h           56.0 s        8.9%    44.1 h      40.2 h 
+WARN  14:06:31,913 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr2:26816376 has 13 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  14:07:01,122 ProgressMeter -   chr2:27530462     2.48956422E8     3.9 h           56.0 s        8.9%    44.0 h      40.1 h 
+INFO  14:08:01,123 ProgressMeter -   chr2:29006331     2.48956422E8     3.9 h           57.0 s        9.0%    44.0 h      40.0 h 
+INFO  14:09:01,125 ProgressMeter -   chr2:30375977     2.48956422E8     4.0 h           57.0 s        9.0%    44.0 h      40.0 h 
+INFO  14:10:01,126 ProgressMeter -   chr2:31953684     2.48956422E8     4.0 h           57.0 s        9.1%    43.9 h      39.9 h 
+INFO  14:11:01,127 ProgressMeter -   chr2:33279507     2.48956422E8     4.0 h           57.0 s        9.1%    43.9 h      39.9 h 
+INFO  14:12:01,128 ProgressMeter -   chr2:34454072     2.48956422E8     4.0 h           58.0 s        9.1%    43.9 h      39.9 h 
+INFO  14:13:01,135 ProgressMeter -   chr2:35674410     2.48956422E8     4.0 h           58.0 s        9.2%    43.9 h      39.8 h 
+INFO  14:14:01,137 ProgressMeter -   chr2:37170925     2.48956422E8     4.0 h           58.0 s        9.2%    43.8 h      39.8 h 
+INFO  14:15:01,138 ProgressMeter -   chr2:38427524     2.48956422E8     4.1 h           58.0 s        9.3%    43.8 h      39.7 h 
+WARN  14:15:28,656 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr2:39045273 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+WARN  14:15:46,509 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr2:39480782 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  14:16:01,140 ProgressMeter -   chr2:39868123     2.48956422E8     4.1 h           58.0 s        9.3%    43.8 h      39.7 h 
+INFO  14:17:01,141 ProgressMeter -   chr2:41103954     2.48956422E8     4.1 h           59.0 s        9.4%    43.8 h      39.7 h 
+INFO  14:18:01,142 ProgressMeter -   chr2:42319051     2.48956422E8     4.1 h           59.0 s        9.4%    43.8 h      39.6 h 
+WARN  14:18:06,923 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr2:42461182 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  14:19:01,143 ProgressMeter -   chr2:43751220     2.48956422E8     4.1 h           59.0 s        9.4%    43.7 h      39.6 h 
+INFO  14:20:01,145 ProgressMeter -   chr2:45187416     2.48956422E8     4.1 h           59.0 s        9.5%    43.7 h      39.5 h 
+INFO  14:21:01,146 ProgressMeter -   chr2:46625257     2.48956422E8     4.2 h           60.0 s        9.5%    43.6 h      39.5 h 
+INFO  14:22:01,147 ProgressMeter -   chr2:47942444     2.48956422E8     4.2 h           60.0 s        9.6%    43.6 h      39.4 h 
+INFO  14:23:01,152 ProgressMeter -   chr2:49493358     2.48956422E8     4.2 h           60.0 s        9.6%    43.6 h      39.4 h 
+INFO  14:24:01,153 ProgressMeter -   chr2:50828274     2.48956422E8     4.2 h           60.0 s        9.7%    43.5 h      39.3 h 
+INFO  14:25:01,154 ProgressMeter -   chr2:52344825     2.48956422E8     4.2 h           61.0 s        9.7%    43.5 h      39.3 h 
+WARN  14:25:25,361 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr2:52751674 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+WARN  14:25:49,022 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr2:53327249 has 7 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  14:26:01,156 ProgressMeter -   chr2:53592341     2.48956422E8     4.2 h           61.0 s        9.8%    43.5 h      39.2 h 
+INFO  14:27:01,157 ProgressMeter -   chr2:55038655     2.48956422E8     4.3 h           61.0 s        9.8%    43.4 h      39.2 h 
+INFO  14:28:01,158 ProgressMeter -   chr2:56368162     2.48956422E8     4.3 h           61.0 s        9.8%    43.4 h      39.2 h 
+INFO  14:29:01,160 ProgressMeter -   chr2:57636494     2.48956422E8     4.3 h           62.0 s        9.9%    43.4 h      39.1 h 
+INFO  14:30:01,161 ProgressMeter -   chr2:59542988     2.48956422E8     4.3 h           62.0 s       10.0%    43.3 h      39.0 h 
+INFO  14:31:01,162 ProgressMeter -   chr2:61068906     2.48956422E8     4.3 h           62.0 s       10.0%    43.3 h      38.9 h 
+INFO  14:32:01,163 ProgressMeter -   chr2:62489145     2.48956422E8     4.3 h           62.0 s       10.0%    43.2 h      38.9 h 
+INFO  14:33:01,168 ProgressMeter -   chr2:64266876     2.48956422E8     4.4 h           63.0 s       10.1%    43.2 h      38.8 h 
+INFO  14:34:01,170 ProgressMeter -   chr2:65821580     2.48956422E8     4.4 h           63.0 s       10.2%    43.1 h      38.7 h 
+INFO  14:35:01,172 ProgressMeter -   chr2:67553107     2.48956422E8     4.4 h           63.0 s       10.2%    43.0 h      38.6 h 
+INFO  14:36:01,175 ProgressMeter -   chr2:68963957     2.48956422E8     4.4 h           63.0 s       10.3%    43.0 h      38.6 h 
+INFO  14:37:01,177 ProgressMeter -   chr2:70428985     2.48956422E8     4.4 h           64.0 s       10.3%    43.0 h      38.5 h 
+INFO  14:38:01,178 ProgressMeter -   chr2:71731907     2.48956422E8     4.4 h           64.0 s       10.3%    43.0 h      38.5 h 
+INFO  14:39:01,179 ProgressMeter -   chr2:73772392     2.48956422E8     4.5 h           64.0 s       10.4%    42.8 h      38.4 h 
+INFO  14:40:01,181 ProgressMeter -   chr2:75280120     2.48956422E8     4.5 h           64.0 s       10.5%    42.8 h      38.3 h 
+INFO  14:41:01,183 ProgressMeter -   chr2:76638962     2.48956422E8     4.5 h           64.0 s       10.5%    42.8 h      38.3 h 
+INFO  14:42:01,184 ProgressMeter -   chr2:78337712     2.48956422E8     4.5 h           65.0 s       10.6%    42.7 h      38.2 h 
+INFO  14:43:01,189 ProgressMeter -   chr2:79749523     2.48956422E8     4.5 h           65.0 s       10.6%    42.7 h      38.2 h 
+INFO  14:44:01,190 ProgressMeter -   chr2:81378119     2.48956422E8     4.5 h           65.0 s       10.7%    42.6 h      38.1 h 
+INFO  14:45:01,192 ProgressMeter -   chr2:83095159     2.48956422E8     4.6 h           65.0 s       10.7%    42.6 h      38.0 h 
+INFO  14:46:01,193 ProgressMeter -   chr2:84846696     2.48956422E8     4.6 h           66.0 s       10.8%    42.5 h      37.9 h 
+INFO  14:47:01,194 ProgressMeter -   chr2:86469180     2.48956422E8     4.6 h           66.0 s       10.8%    42.5 h      37.9 h 
+INFO  14:48:01,196 ProgressMeter -   chr2:87413775     2.48956422E8     4.6 h           66.0 s       10.9%    42.5 h      37.9 h 
+INFO  14:49:01,197 ProgressMeter -   chr2:88376301     2.48956422E8     4.6 h           66.0 s       10.9%    42.5 h      37.9 h 
+INFO  14:50:01,198 ProgressMeter -   chr2:89664108     2.48956422E8     4.6 h           67.0 s       10.9%    42.5 h      37.9 h 
+INFO  14:51:01,200 ProgressMeter -   chr2:89838973     2.48956422E8     4.7 h           67.0 s       10.9%    42.6 h      38.0 h 
+INFO  14:52:01,201 ProgressMeter -   chr2:90379823     2.48956422E8     4.7 h           67.0 s       10.9%    42.7 h      38.1 h 
+INFO  14:53:01,205 ProgressMeter -   chr2:90381787     2.48956422E8     4.7 h           67.0 s       10.9%    42.9 h      38.2 h 
+INFO  14:54:01,207 ProgressMeter -   chr2:90384053     2.48956422E8     4.7 h           68.0 s       10.9%    43.0 h      38.3 h 
+INFO  14:55:01,208 ProgressMeter -   chr2:90386711     2.48956422E8     4.7 h           68.0 s       10.9%    43.2 h      38.5 h 
+INFO  14:56:01,209 ProgressMeter -   chr2:90388734     2.48956422E8     4.7 h           68.0 s       10.9%    43.3 h      38.6 h 
+INFO  14:57:01,211 ProgressMeter -   chr2:90390798     2.48956422E8     4.8 h           68.0 s       10.9%    43.5 h      38.7 h 
+INFO  14:58:01,212 ProgressMeter -   chr2:90392742     2.48956422E8     4.8 h           69.0 s       10.9%    43.6 h      38.9 h 
+INFO  14:59:01,213 ProgressMeter -   chr2:90395921     2.48956422E8     4.8 h           69.0 s       10.9%    43.8 h      39.0 h 
+INFO  15:00:01,214 ProgressMeter -   chr2:90397685     2.48956422E8     4.8 h           69.0 s       10.9%    43.9 h      39.1 h 
+INFO  15:01:01,216 ProgressMeter -   chr2:90398220     2.48956422E8     4.8 h           69.0 s       10.9%    44.1 h      39.3 h 
+INFO  15:02:01,217 ProgressMeter -   chr2:90399060     2.48956422E8     4.8 h           70.0 s       10.9%    44.3 h      39.4 h 
+INFO  15:03:01,222 ProgressMeter -   chr2:91408829     2.48956422E8     4.9 h           70.0 s       11.0%    44.3 h      39.4 h 
+INFO  15:04:01,223 ProgressMeter -   chr2:91446188     2.48956422E8     4.9 h           70.0 s       11.0%    44.4 h      39.5 h 
+WARN  15:04:44,497 ExactAFCalculator - this tool is currently set to genotype at most 6 alternate alleles in a given context, but the context at chr2:91503079 has 9 alternate alleles so only the top alleles will be used; see the --max_alternate_alleles argument 
+INFO  15:05:01,225 ProgressMeter -   chr2:91528181     2.48956422E8     4.9 h           70.0 s       11.0%    44.6 h      39.7 h 
+INFO  15:06:01,226 ProgressMeter -   chr2:91873688     2.48956422E8     4.9 h           71.0 s       11.0%    44.7 h      39.8 h 
+INFO  15:07:01,227 ProgressMeter -   chr2:92103855     2.48956422E8     4.9 h           71.0 s       11.0%    44.8 h      39.9 h 
+INFO  15:08:01,228 ProgressMeter -   chr2:92632642     2.48956422E8     4.9 h           71.0 s       11.0%    44.9 h      39.9 h 
+INFO  15:09:01,230 ProgressMeter -   chr2:93810591     2.48956422E8     5.0 h           71.0 s       11.1%    44.9 h      39.9 h 
+INFO  15:10:01,231 ProgressMeter -   chr2:94675664     2.48956422E8     5.0 h           71.0 s       11.1%    44.9 h      39.9 h 
+INFO  15:11:01,232 ProgressMeter -   chr2:95940915     2.48956422E8     5.0 h           72.0 s       11.1%    44.9 h      39.9 h 
+INFO  15:12:01,234 ProgressMeter -   chr2:97031865     2.48956422E8     5.0 h           72.0 s       11.2%    44.9 h      39.9 h 
+INFO  15:13:01,239 ProgressMeter -   chr2:97711344     2.48956422E8     5.0 h           72.0 s       11.2%    45.0 h      39.9 h 
+INFO  15:14:01,240 ProgressMeter -   chr2:99410204     2.48956422E8     5.0 h           72.0 s       11.2%    44.9 h      39.8 h 
+INFO  15:15:01,242 ProgressMeter -  chr2:101002120     2.48956422E8     5.1 h           73.0 s       11.3%    44.8 h      39.8 h 
+INFO  15:16:01,243 ProgressMeter -  chr2:102461982     2.48956422E8     5.1 h           73.0 s       11.3%    44.8 h      39.7 h 
+INFO  15:17:01,244 ProgressMeter -  chr2:104343785     2.48956422E8     5.1 h           73.0 s       11.4%    44.7 h      39.6 h 
+INFO  15:18:01,246 ProgressMeter -  chr2:105835658     2.48956422E8     5.1 h           73.0 s       11.4%    44.7 h      39.5 h 
+INFO  15:19:01,247 ProgressMeter -  chr2:107170689     2.48956422E8     5.1 h           74.0 s       11.5%    44.6 h      39.5 h 
+INFO  15:20:01,248 ProgressMeter -  chr2:108680716     2.48956422E8     5.1 h           74.0 s       11.5%    44.6 h      39.4 h 
+INFO  15:21:01,249 ProgressMeter -  chr2:110231745     2.48956422E8     5.2 h           74.0 s       11.6%    44.5 h      39.4 h 
+INFO  15:22:01,251 ProgressMeter -  chr2:111988213     2.48956422E8     5.2 h           74.0 s       11.6%    44.5 h      39.3 h 

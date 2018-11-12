@@ -1,0 +1,9 @@
+#!/bin/bash
+#SBATCH -J HaplotypeCallerWGS
+#SBATCH --ntasks=1
+#SBATCH --output=/ifs/home/kevin/SMRT_SV_Project/jobs/haplotypecaller_WGS_hg38.out
+#SBATCH --error=/ifs/home/kevin/SMRT_SV_Project/jobs/haplotypecaller_WGS_hg38.err
+#SBATCH --partition=res-prio
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=kevin.yauy@radboudumc.nl
+java -jar /cm/shared/apps/bioinf/gatk/3.4-46/bin/GenomeAnalysisTK.jar -R /ifs/data/lib/genomes/human/GRCh38/hs_ref_GRCh38.p2_all_contigs.fa -T HaplotypeCaller -I /ifs/data/research/novaseq/genomes/old_samples/BvB41_child/remapping-040918/BvB41_child/BvB41_child.bam -o /ifs/data/research/novaseq/genomes/old_samples/BvB41_child/remapping-040918/calling-110918/BvB41_child.haplotypecaller.vcf
