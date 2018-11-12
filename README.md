@@ -10,9 +10,9 @@ We sequence this trio with Illumina Novaseq, 10x Genomics Chromium, PacBio, Oxfo
 
 ### Protocol
 
-#### Resolve haplotype by read based phasing
+#### Haplotype by read and pedigree based phasing and genotype
 
-We apply WhatsHap (Martin et al. 2018) with pedigree-phasing algorithm (Garg et al. 2018)
+We apply read-based phasing WhatsHap (Martin et al. 2018) with pedigree-phasing algorithm (Garg et al. 2018)
 
 ### References
 
