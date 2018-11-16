@@ -1,0 +1,11 @@
+#!/bin/bash
+#SBATCH -J GVCFtoVCF
+#SBATCH --ntasks=1
+#SBATCH --output=/ifs/home/kevin/WGS/jobs/gvcftovcf.out
+#SBATCH --error=/ifs/home/kevin/WGS/jobs/gvcftovcf.err
+#SBATCH --partition=research
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=kevin.yauy@radboudumc.nl
+module load bioinf/vcftools/0.1.13 
+vcftools --gzvcf ~/WGS/data/IlluminaSNV/BvB41_child/jointGenotype-121118/BvB41_child_haplotypecaller.g.vcf --min-alleles 2 --recode-INFO-all --stdout > ~/WGS/data/IlluminaSNV/BvB41_child/jointGenotype-121118/BvB41_child_haplotypecaller.vcf
+
