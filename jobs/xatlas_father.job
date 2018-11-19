@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH -J SNV.xAtlasCalling_BvB_father
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=16100M
+#SBATCH --output=/ifs/home/kevin/WGS/jobs/SNV.xAtlasCalling_father.out
+#SBATCH --error=/ifs/home/kevin/WGS/jobs/SNV.xAtlasCalling_father.err
+#SBATCH --partition=res-prio
+#SBATCH --mail-user=kevin.yauy@radboudumc.nl
+module load bioinf/htslib/1.9
+module load bioinf/xatlas/0.1
+module load gcc/5.1.0
+module load bioinf/vcftools/0.1.13
+
+java -Dspring.config.location=/ifs/data/research/projects/GenomeSpeedTest/testxAtlas/bin/ensemblevariantcalling-1.7.0-SNAPSHOT-package/config/ -Dspring.profiles.active=TURBO -classpath "/ifs/data/research/projects/GenomeSpeedTest/testxAtlas/bin/ensemblevariantcalling-1.7.0-SNAPSHOT-package/lib/*" org.umcn.gen.variantcalling.snv.VariantCallingApplication --inFile=/ifs/data/research/novaseq/genomes/old_samples/BvB41_father/remapping-040918/BvB41_father/BvB41_father.bam  --outFile=/ifs/data/research/novaseq/genomes/old_samples/BvB41_father/remapping-040918/BvB41_father --folder=/ifs/data/research/novaseq/genomes/old_samples/BvB41_father/remapping-040918/ --callers=xatlas --reference=/ifs/home/kevin/WGS/data/GRCh38_no_alt_plus_hs38d1_concat_nonprimary.fa --targetFile=NONE --gvcf=no --info=null -jobid=SNV.xAtlasCalling_BvB41_father

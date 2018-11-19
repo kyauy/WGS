@@ -20,7 +20,14 @@ Illumina data have been aligned with BWA-mem in hg38 and SV calling have been ma
 According to CLAMMS, deletions must satisfy no heterozygous SNPs and at least one homozygous SNP are called in the CNV region.
 Duplications at least one heterozygous SNP is called in the CNV region and the average allele balance across all heterozygous SNPs in the region is in the range [0.611,0.723], corresponding to the 15th and 85th percentiles of inlier duplication calls.
 
-Select only CNV :
+Get clean SNV calling from Illumina Novaseq WGS :
+```
+{ ~/WGS/jobs }-> sbatch xatlas_child.job
+{ ~/WGS/jobs }-> sbatch xatlas_father.job
+{ ~/WGS/jobs }-> sbatch xatlas_mother.job
+```
+
+Select only deletion and duplication CNV :
 ```
 { ~/WGS/data }-> bcftools view -O v -i 'SVTYPE="DEL"' manta+lumpy+delly.merged500bp.vcf  > manta+lumpy+delly.merged500bp.DEL.only.vcf
 { ~/WGS/data }-> bcftools view -O v -i 'SVTYPE="DUP"' manta+lumpy+delly.merged500bp.vcf  > manta+lumpy+delly.merged500bp.DUP.only.vcf
@@ -28,8 +35,7 @@ Select only CNV :
 bcftools view -O v -i 'SVTYPE="DEL"' PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.vcf > PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.vcf
 bcftools view -O v -i 'SVTYPE="DUP"' PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.vcf > PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.vcf
 ```
-Sort and index VCF :
-
+Sort and index VCF to be ready for filtering and annotation :
 ```
 bcftools sort -O z manta+lumpy+delly.merged500bp.DEL.ONLY.vcf.gz -o manta+lumpy+delly.merged500bp.DEL.ONLY.sorted.vcf.gz
 bcftools index manta+lumpy+delly.merged500bp.DEL.ONLY.sorted.vcf.gz
@@ -44,7 +50,7 @@ bcftools sort -O z PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.vcf.gz -o
 bcftools index PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.sorted.vcf.gz
 ```
 
-Filter VCF :
+Filter and annotate VCF by AnnotSV :
 
 ```
 ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/AnnotSV/manta+lumpy+delly.merged500bp.DEL.ONLY.sorted.vcf -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir ~/WGS/data/AnnotSV/ -vcfFiles ~/WGS/data/AnnotSV/BvB41_child.haplotypecaller.vcf
