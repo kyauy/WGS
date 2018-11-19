@@ -42,20 +42,19 @@ bcftools sort -O z PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.vcf.gz -o
 bcftools index PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.sorted.vcf.gz
 bcftools sort -O z PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.vcf.gz -o PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.sorted.vcf.gz
 bcftools index PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.sorted.vcf.gz
-
-
 ```
 
 Filter VCF :
 
 ```
 ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/AnnotSV/manta+lumpy+delly.merged500bp.DEL.ONLY.sorted.vcf -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir ~/WGS/data/AnnotSV/ -vcfFiles ~/WGS/data/AnnotSV/BvB41_child.haplotypecaller.vcf
+
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/AnnotSV/PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.sorted.vcf -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir ~/WGS/data/AnnotSV/ -vcfFiles ~/WGS/data/AnnotSV/BvB41_child.haplotypecaller.vcf
 ```
 
 #### Haplotype by read and pedigree based phasing and genotype
 
 We apply read-based phasing WhatsHap (Martin et al. 2018) with pedigree-phasing algorithm (Garg et al. 2018)
-
 ```
 usage: whatshap phase
 output-read-list FILE
