@@ -24,6 +24,9 @@ Select only CNV :
 ```
 { ~/WGS/data }-> bcftools view -O v -i 'SVTYPE="DEL"' manta+lumpy+delly.merged500bp.vcf  > manta+lumpy+delly.merged500bp.DEL.only.vcf
 { ~/WGS/data }-> bcftools view -O v -i 'SVTYPE="DUP"' manta+lumpy+delly.merged500bp.vcf  > manta+lumpy+delly.merged500bp.DUP.only.vcf
+
+bcftools view -O v -i 'SVTYPE="DEL"' PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.vcf > PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.vcf
+bcftools view -O v -i 'SVTYPE="DUP"' PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.vcf > PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.vcf
 ```
 Sort and index VCF :
 
@@ -34,6 +37,13 @@ bcftools sort -O z manta+lumpy+delly.merged500bp.DUP.only.vcf.gz -o manta+lumpy+
 bcftools index manta+lumpy+delly.merged500bp.DUP.ONLY.sorted.vcf.gz
 
 bcftools index IlluminaSNV/calling-110918/BvB41_child.haplotypecaller.vcf.gz
+
+bcftools sort -O z PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.vcf.gz -o PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.sorted.vcf.gz
+bcftools index PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.sorted.vcf.gz
+bcftools sort -O z PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.vcf.gz -o PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.sorted.vcf.gz
+bcftools index PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.sorted.vcf.gz
+
+
 ```
 
 Filter VCF :
