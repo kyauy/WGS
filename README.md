@@ -12,13 +12,8 @@ We sequence this trio with Illumina Novaseq, 10x Genomics Chromium, PacBio, Oxfo
 
 #### NGS data processing
 
-PacBio data have been aligned with minimap2 in hg38 and SV calling have been made with pbsv2.
-Illumina data have been aligned with BWA-mem in hg38 and SV calling have been made with Manta, Lumpy and Delly.
-
-#### Filter CNVs
-
-According to CLAMMS, deletions must satisfy no heterozygous SNPs and at least one homozygous SNP are called in the CNV region.
-Duplications at least one heterozygous SNP is called in the CNV region and the average allele balance across all heterozygous SNPs in the region is in the range [0.611,0.723], corresponding to the 15th and 85th percentiles of inlier duplication calls.
+PacBio data have been aligned with minimap2 in hg38, SV calling have been made with pbsv2 and SNV calling with samtools mpileup.
+Illumina data have been aligned with BWA-mem in hg38, SV calling have been made with Manta, Lumpy and Delly and SNV calling have been made with xAtlas.
 
 Get clean SNV calling from Illumina Novaseq WGS :
 ```
@@ -26,6 +21,11 @@ Get clean SNV calling from Illumina Novaseq WGS :
 { ~/WGS/jobs }-> sbatch xatlas_father.job
 { ~/WGS/jobs }-> sbatch xatlas_mother.job
 ```
+
+#### CNVs processing
+
+According to CLAMMS, deletions must satisfy no heterozygous SNPs and at least one homozygous SNP are called in the CNV region.
+Duplications at least one heterozygous SNP is called in the CNV region and the average allele balance across all heterozygous SNPs in the region is in the range [0.611,0.723], corresponding to the 15th and 85th percentiles of inlier duplication calls.
 
 Select only deletion and duplication CNV :
 ```
@@ -35,6 +35,7 @@ Select only deletion and duplication CNV :
 bcftools view -O v -i 'SVTYPE="DEL"' PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.vcf > PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.vcf
 bcftools view -O v -i 'SVTYPE="DUP"' PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.vcf > PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.vcf
 ```
+
 Sort and index VCF to be ready for filtering and annotation :
 ```
 bcftools sort -O z manta+lumpy+delly.merged500bp.DEL.ONLY.vcf.gz -o manta+lumpy+delly.merged500bp.DEL.ONLY.sorted.vcf.gz
@@ -69,10 +70,12 @@ output-read-list FILE
 
 ### Results
 
+#### SV calling performance among technologies
+
+
 #### Phasing to resolve SNV calling
 
 We reanalyse phased SNV data looking for unrecognized variants.
-
 
 
 ### References
