@@ -22,13 +22,56 @@ Get clean SNV calling from Illumina Novaseq WGS :
 { ~/WGS/jobs }-> sbatch xatlas_mother.job
 ```
 
-#### CNVs processing
+Split by sample all SV vcf :
+```
+##### PacBio
+## pbsv2
+{ ~/WGS/data/pbsv2 }-> bcftools view -s DNA17-06166 -O v -c 1  hg38.PBRT01+03+04+05+07.pbsv2.20180823.vcf > hg38.DNA17-06166.pbsv2.vcf
+{ ~/WGS/data/pbsv2 }-> bcftools view -s DNA17-06167 -O v -c 1  hg38.PBRT01+03+04+05+07.pbsv2.20180823.vcf > hg38.DNA17-06167.pbsv2.vcf
+{ ~/WGS/data/pbsv2 }-> bcftools view -s DNA17-06168 -O v -c 1  hg38.PBRT01+03+04+05+07.pbsv2.20180823.vcf > hg38.DNA17-06168.pbsv2.vcf
+
+##### Illumina
+## manta
+15:16:18 kevin::login02 { ~/WGS/data/manta }-> bcftools view -O v -c 1 -s BvB41_child diploidSV.filtered.vcf.gz > hg38.DNA17-06166.manta.vcf
+15:19:36 kevin::login02 { ~/WGS/data/manta }-> bcftools view -O v -c 1 -s BvB41_father diploidSV.filtered.vcf.gz > hg38.DNA17-06167.manta.vcf
+15:19:55 kevin::login02 { ~/WGS/data/manta }-> bcftools view -O v -c 1 -s BvB41_mother diploidSV.filtered.vcf.gz > hg38.DNA17-06168.manta.vcf
+
+## lumpy
+15:21:35 kevin::login02 { ~/WGS/data/lumpy }-> bcftools view -O v -c 1 -s BvB41_child Trio5.Lumpy.svtyper2.GTalt+GQ20.vcf > hg38.DNA17-06166.lumpy.vcf
+15:22:00 kevin::login02 { ~/WGS/data/lumpy }-> bcftools view -O v -c 1 -s BvB41_father Trio5.Lumpy.svtyper2.GTalt+GQ20.vcf > hg38.DNA17-06167.lumpy.vcf
+15:22:11 kevin::login02 { ~/WGS/data/lumpy }-> bcftools view -O v -c 1 -s BvB41_mother Trio5.Lumpy.svtyper2.GTalt+GQ20.vcf > hg38.DNA17-06168.lumpy.vcf
+
+## delly
+15:24:30 kevin::login02 { ~/WGS/data/delly }-> bcftools view -O v -c 1 -s BvB41_child Trio5.Delly.GTalt+GQ20.vcf > hg38.DNA17-06166.delly.vcf
+15:24:44 kevin::login02 { ~/WGS/data/delly }-> bcftools view -O v -c 1 -s BvB41_father Trio5.Delly.GTalt+GQ20.vcf > hg38.DNA17-06167.delly.vcf
+15:24:55 kevin::login02 { ~/WGS/data/delly }-> bcftools view -O v -c 1 -s BvB41_mother Trio5.Delly.GTalt+GQ20.vcf > hg38.DNA17-06168.delly.vcf
+```
+
+#### CNVs comparative processing
 
 According to CLAMMS, deletions must satisfy no heterozygous SNPs and at least one homozygous SNP are called in the CNV region.
 Duplications at least one heterozygous SNP is called in the CNV region and the average allele balance across all heterozygous SNPs in the region is in the range [0.611,0.723], corresponding to the 15th and 85th percentiles of inlier duplication calls.
 
-Select only deletion and duplication CNV :
+Select only deletion and duplication CNV > 50pb and DP > 5 (assume that all DUP are INS) :
+(beware that there could be a chrMT and chrM problem that need to be fixed)
 ```
+########################### PacBio
+############### pbsv2 (according to https://github.com/PacificBiosciences/pbsv)
+###### DELETION from 20pb to 100kb
+14:01:52 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN <= -20 && INFO/SVTYPE == "DEL" && DP>5 && GT="alt"' hg38.DNA17-06166.pbsv2.vcf > hg38.DNA17-06166.pbsv2.DEL.ONLY.vcf
+14:02:45 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN <= -20 && INFO/SVTYPE == "DEL" && DP>5 && GT="alt"' hg38.DNA17-06167.pbsv2.vcf > hg38.DNA17-06167.pbsv2.DEL.ONLY.vcf
+14:04:04 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN <= -20 && INFO/SVTYPE == "DEL" && DP>5 && GT="alt"' hg38.DNA17-06168.pbsv2.vcf > hg38.DNA17-06168.pbsv2.DEL.ONLY.vcf
+
+##### DUPLICATION = PBSV call them INS ONLY = from 20bp to 5 kb
+14:25:27 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN >= 20 && INFO/SVTYPE == "INS" && DP>5 && GT="alt"' hg38.DNA17-06168.pbsv2.vcf > hg38.DNA17-06168.pbsv2.DUP.ONLY.vcf
+14:25:50 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN >= 20 && INFO/SVTYPE == "INS" && DP>5 && GT="alt"' hg38.DNA17-06167.pbsv2.vcf > hg38.DNA17-06167.pbsv2.DUP.ONLY.vcf
+14:25:58 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN >= 20 && INFO/SVTYPE == "INS" && DP>5 && GT="alt"' hg38.DNA17-06166.pbsv2.vcf > hg38.DNA17-06166.pbsv2.DUP.ONLY.vcf
+
+########################### Novaseq
+############## Manta
+
+
+
 { ~/WGS/data }-> bcftools view -O v -i 'SVTYPE="DEL"' manta+lumpy+delly.merged500bp.vcf  > manta+lumpy+delly.merged500bp.DEL.only.vcf
 { ~/WGS/data }-> bcftools view -O v -i 'SVTYPE="DUP"' manta+lumpy+delly.merged500bp.vcf  > manta+lumpy+delly.merged500bp.DUP.only.vcf
 
