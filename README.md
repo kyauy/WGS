@@ -45,6 +45,29 @@ Split by sample all SV vcf :
 15:24:30 kevin::login02 { ~/WGS/data/delly }-> bcftools view -O v -c 1 -s BvB41_child Trio5.Delly.GTalt+GQ20.vcf > hg38.DNA17-06166.delly.vcf
 15:24:44 kevin::login02 { ~/WGS/data/delly }-> bcftools view -O v -c 1 -s BvB41_father Trio5.Delly.GTalt+GQ20.vcf > hg38.DNA17-06167.delly.vcf
 15:24:55 kevin::login02 { ~/WGS/data/delly }-> bcftools view -O v -c 1 -s BvB41_mother Trio5.Delly.GTalt+GQ20.vcf > hg38.DNA17-06168.delly.vcf
+
+## merge these 3 SV caller with maximum allowed distance of 500pb
+
+# Patient 1
+{ echo "/ifs/home/kevin/WGS/data/VCF/novaseq/manta/hg38.DNA17-06166.manta.vcf";
+echo "/ifs/home/kevin/WGS/data/VCF/novaseq/lumpy/hg38.DNA17-06166.lumpy.vcf";
+echo "/ifs/home/kevin/WGS/data/VCF/novaseq/delly/hg38.DNA17-06166.delly.vcf"; } > manta+lumpy+delly_DNA17-06166.fof
+
+SURVIVOR merge manta+lumpy+delly_DNA17-06166.fof 500 1 1 0 0 20 manta+lumpy+delly_DNA17-06166.merged500pb.vcf
+
+# Patient 2
+{ echo "/ifs/home/kevin/WGS/data/VCF/novaseq/manta/hg38.DNA17-06167.manta.vcf";
+echo "/ifs/home/kevin/WGS/data/VCF/novaseq/lumpy/hg38.DNA17-06167.lumpy.vcf";
+echo "/ifs/home/kevin/WGS/data/VCF/novaseq/delly/hg38.DNA17-06167.delly.vcf"; } > manta+lumpy+delly_DNA17-06167.fof
+
+SURVIVOR merge manta+lumpy+delly_DNA17-06167.fof 500 1 1 0 0 20 manta+lumpy+delly_DNA17-06167.merged500pb.vcf
+
+# Patient 3
+{ echo "/ifs/home/kevin/WGS/data/VCF/novaseq/manta/hg38.DNA17-06168.manta.vcf";
+echo "/ifs/home/kevin/WGS/data/VCF/novaseq/lumpy/hg38.DNA17-06168.lumpy.vcf";
+echo "/ifs/home/kevin/WGS/data/VCF/novaseq/delly/hg38.DNA17-06168.delly.vcf"; } > manta+lumpy+delly_DNA17-06168.fof
+
+SURVIVOR merge manta+lumpy+delly_DNA17-06168.fof 500 1 1 0 0 20 manta+lumpy+delly_DNA17-06168.merged500pb.vcf
 ```
 
 #### CNVs comparative processing
@@ -55,21 +78,21 @@ Duplications at least one heterozygous SNP is called in the CNV region and the a
 Select only deletion and duplication CNV > 50pb and DP > 5 (assume that all DUP are INS) :
 (beware that there could be a chrMT and chrM problem that need to be fixed)
 ```
-########################### PacBio
-############### pbsv2 (according to https://github.com/PacificBiosciences/pbsv)
+################ Pacbio pbsv2 (according to https://github.com/PacificBiosciences/pbsv)
 ###### DELETION from 20pb to 100kb
 14:01:52 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN <= -20 && INFO/SVTYPE == "DEL" && DP>5 && GT="alt"' hg38.DNA17-06166.pbsv2.vcf > hg38.DNA17-06166.pbsv2.DEL.ONLY.vcf
 14:02:45 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN <= -20 && INFO/SVTYPE == "DEL" && DP>5 && GT="alt"' hg38.DNA17-06167.pbsv2.vcf > hg38.DNA17-06167.pbsv2.DEL.ONLY.vcf
 14:04:04 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN <= -20 && INFO/SVTYPE == "DEL" && DP>5 && GT="alt"' hg38.DNA17-06168.pbsv2.vcf > hg38.DNA17-06168.pbsv2.DEL.ONLY.vcf
 
-##### DUPLICATION = PBSV call them INS ONLY = from 20bp to 5 kb
+###### DUPLICATION = PBSV call them INS ONLY = from 20bp to 5 kb
 14:25:27 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN >= 20 && INFO/SVTYPE == "INS" && DP>5 && GT="alt"' hg38.DNA17-06168.pbsv2.vcf > hg38.DNA17-06168.pbsv2.DUP.ONLY.vcf
 14:25:50 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN >= 20 && INFO/SVTYPE == "INS" && DP>5 && GT="alt"' hg38.DNA17-06167.pbsv2.vcf > hg38.DNA17-06167.pbsv2.DUP.ONLY.vcf
 14:25:58 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN >= 20 && INFO/SVTYPE == "INS" && DP>5 && GT="alt"' hg38.DNA17-06166.pbsv2.vcf > hg38.DNA17-06166.pbsv2.DUP.ONLY.vcf
 
-########################### Novaseq
-############## Manta
+################# Novaseq manta, lumpy and delly
+###### DELETION
 
+###### DUPLICATION
 
 
 { ~/WGS/data }-> bcftools view -O v -i 'SVTYPE="DEL"' manta+lumpy+delly.merged500bp.vcf  > manta+lumpy+delly.merged500bp.DEL.only.vcf
