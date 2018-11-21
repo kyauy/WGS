@@ -75,7 +75,7 @@ SURVIVOR merge manta+lumpy+delly_DNA17-06168.fof 500 1 1 0 0 20 manta+lumpy+dell
 According to CLAMMS, deletions must satisfy no heterozygous SNPs and at least one homozygous SNP are called in the CNV region.
 Duplications at least one heterozygous SNP is called in the CNV region and the average allele balance across all heterozygous SNPs in the region is in the range [0.611,0.723], corresponding to the 15th and 85th percentiles of inlier duplication calls.
 
-Select only deletion and duplication CNV > 50pb and DP > 5 (assume that all DUP are INS) :
+Select only deletion and duplication CNV > 20pb and DP > 5 (assume that all DUP are INS) :
 (beware that there could be a chrMT and chrM problem that need to be fixed)
 ```
 ################ Pacbio pbsv2 (according to https://github.com/PacificBiosciences/pbsv)
@@ -84,22 +84,25 @@ Select only deletion and duplication CNV > 50pb and DP > 5 (assume that all DUP 
 14:02:45 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN <= -20 && INFO/SVTYPE == "DEL" && DP>5 && GT="alt"' hg38.DNA17-06167.pbsv2.vcf > hg38.DNA17-06167.pbsv2.DEL.ONLY.vcf
 14:04:04 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN <= -20 && INFO/SVTYPE == "DEL" && DP>5 && GT="alt"' hg38.DNA17-06168.pbsv2.vcf > hg38.DNA17-06168.pbsv2.DEL.ONLY.vcf
 
-###### DUPLICATION = PBSV call them INS ONLY = from 20bp to 5 kb
+###### DUPLICATION = PBSV call them INS ONLY = from 20bp to 5 kb / with DP filter
 14:25:27 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN >= 20 && INFO/SVTYPE == "INS" && DP>5 && GT="alt"' hg38.DNA17-06168.pbsv2.vcf > hg38.DNA17-06168.pbsv2.DUP.ONLY.vcf
 14:25:50 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN >= 20 && INFO/SVTYPE == "INS" && DP>5 && GT="alt"' hg38.DNA17-06167.pbsv2.vcf > hg38.DNA17-06167.pbsv2.DUP.ONLY.vcf
 14:25:58 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN >= 20 && INFO/SVTYPE == "INS" && DP>5 && GT="alt"' hg38.DNA17-06166.pbsv2.vcf > hg38.DNA17-06166.pbsv2.DUP.ONLY.vcf
 
 ################# Novaseq manta, lumpy and delly
-###### DELETION
+###### DELETION of already filtered SV file
+11:06:13 kevin::login02 { ~/WGS/data/VCF/novaseq }->  bcftools view --output-type v --include 'INFO/AVGLEN <= -20 && INFO/SVTYPE == "DEL" && GT="alt"' manta+lumpy+delly_DNA17-06166.merged500pb.vcf > manta+lumpy+delly_DNA17-06166.merged500pb.DEL.ONLY.vcf
+11:09:25 kevin::login02 { ~/WGS/data/VCF/novaseq }->  bcftools view --output-type v --include 'INFO/AVGLEN <= -20 && INFO/SVTYPE == "DEL" && GT="alt"' manta+lumpy+delly_DNA17-06167.merged500pb.vcf > manta+lumpy+delly_DNA17-06167.merged500pb.DEL.ONLY.vcf
+11:09:40 kevin::login02 { ~/WGS/data/VCF/novaseq }->  bcftools view --output-type v --include 'INFO/AVGLEN <= -20 && INFO/SVTYPE == "DEL" && GT="alt"' manta+lumpy+delly_DNA17-06168.merged500pb.vcf > manta+lumpy+delly_DNA17-06168.merged500pb.DEL.ONLY.vcf
 
-###### DUPLICATION
-
-
-{ ~/WGS/data }-> bcftools view -O v -i 'SVTYPE="DEL"' manta+lumpy+delly.merged500bp.vcf  > manta+lumpy+delly.merged500bp.DEL.only.vcf
-{ ~/WGS/data }-> bcftools view -O v -i 'SVTYPE="DUP"' manta+lumpy+delly.merged500bp.vcf  > manta+lumpy+delly.merged500bp.DUP.only.vcf
-
-bcftools view -O v -i 'SVTYPE="DEL"' PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.vcf > PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.vcf
-bcftools view -O v -i 'SVTYPE="DUP"' PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.vcf > PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.vcf
+###### DUPLICATION, with filtering of DEL& DUP call at same position
+11:45:40 kevin::login02 { ~/WGS/data/VCF/novaseq }->  bcftools view --output-type v --include ' INFO/SVTYPE == "DUP" || INFO/SVTYPE == "INS" && GT="alt"' manta+lumpy+delly_DNA17-06168.merged500pb.vcf | grep -v DEL > manta+lumpy+delly_DNA17-06168.merged500pb.DUP.INS.vcf
+11:46:26 kevin::login02 { ~/WGS/data/VCF/novaseq }->  bcftools view --output-type v --include ' INFO/SVTYPE == "DUP" || INFO/SVTYPE == "INS" && GT="alt"' manta+lumpy+delly_DNA17-06167.merged500pb.vcf | grep -v DEL > manta+lumpy+delly_DNA17-06167.merged500pb.DUP.INS.vcf
+11:46:34 kevin::login02 { ~/WGS/data/VCF/novaseq }->  bcftools view --output-type v --include ' INFO/SVTYPE == "DUP" || INFO/SVTYPE == "INS" && GT="alt"' manta+lumpy+delly_DNA17-06166.merged500pb.vcf | grep -v DEL > manta+lumpy+delly_DNA17-06166.merged500pb.DUP.INS.vcf
+## Change all DUP to INS
+11:50:09 kevin::login02 { ~/WGS/data/VCF/novaseq }-> sed 's/DUP/INS/g' manta+lumpy+delly_DNA17-06168.merged500pb.DUP.INS.vcf > manta+lumpy+delly_DNA17-06168.merged500pb.ALL.INS.vcf
+11:50:36 kevin::login02 { ~/WGS/data/VCF/novaseq }-> sed 's/DUP/INS/g' manta+lumpy+delly_DNA17-06167.merged500pb.DUP.INS.vcf > manta+lumpy+delly_DNA17-06167.merged500pb.ALL.INS.vcf
+11:50:45 kevin::login02 { ~/WGS/data/VCF/novaseq }-> sed 's/DUP/INS/g' manta+lumpy+delly_DNA17-06166.merged500pb.DUP.INS.vcf > manta+lumpy+delly_DNA17-06166.merged500pb.ALL.INS.vcf
 ```
 
 Sort and index VCF to be ready for filtering and annotation :
