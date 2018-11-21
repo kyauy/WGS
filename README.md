@@ -182,6 +182,7 @@ Filter and annotate VCF by AnnotSV :
 Number of heterozygous vs homozygous variant SNV :
 
 ```
+####
 17:25:54 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -g hom -c1  BvB41_child_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
 [W::bcf_hdr_check_sanity] PL should be declared as Number=G
 1811424
@@ -191,6 +192,26 @@ Number of heterozygous vs homozygous variant SNV :
 17:26:33 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -c1  BvB41_child_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
 [W::bcf_hdr_check_sanity] PL should be declared as Number=G
 4900187
+####
+17:26:55 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -g hom -c1  BvB41_father_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+1798137
+17:37:42 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -g het -c1  BvB41_father_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+3104193
+17:38:01 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -c1  BvB41_father_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+4902330
+####
+17:38:23 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -g hom -c1  BvB41_mother_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+1789717
+17:39:24 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -g het -c1  BvB41_mother_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+3119161
+17:39:41 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -c1  BvB41_mother_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+4908878
 ```
 
 
