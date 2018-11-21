@@ -179,6 +179,21 @@ Filter and annotate VCF by AnnotSV :
 
 ```
 
+Number of heterozygous vs homozygous variant SNV :
+
+```
+17:25:54 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -g hom -c1  BvB41_child_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+1811424
+17:26:11 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -g het -c1  BvB41_child_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+3088763
+17:26:33 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -c1  BvB41_child_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+4900187
+```
+
+
 #### Haplotype by read and pedigree based phasing and genotype
 
 We apply read-based phasing WhatsHap (Martin et al. 2018) with pedigree-phasing algorithm (Garg et al. 2018)
