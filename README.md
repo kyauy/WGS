@@ -105,24 +105,72 @@ Select only deletion and duplication CNV > 20pb and DP > 5 (assume that all DUP 
 11:50:45 kevin::login02 { ~/WGS/data/VCF/novaseq }-> sed 's/DUP/INS/g' manta+lumpy+delly_DNA17-06166.merged500pb.DUP.INS.vcf > manta+lumpy+delly_DNA17-06166.merged500pb.ALL.INS.vcf
 ```
 
+Merging sequencing technologies :
+
+```
+###### DELETION
+{ echo "/ifs/home/kevin/WGS/data/VCF/pbsv2/hg38.DNA17-06166.pbsv2.DEL.ONLY.vcf";
+  echo "/ifs/home/kevin/WGS/data/VCF/novaseq/manta+lumpy+delly_DNA17-06166.merged500pb.DEL.ONLY.vcf"; } > pacbio+novaseq_DNA17-06166.DEL.fof
+
+SURVIVOR merge pacbio+novaseq_DNA17-06166.DEL.fof 500 1 1 0 0 20 pacbio+novaseq_DNA17-06166.DEL.vcf
+
+{ echo "/ifs/home/kevin/WGS/data/VCF/pbsv2/hg38.DNA17-06167.pbsv2.DEL.ONLY.vcf";
+  echo "/ifs/home/kevin/WGS/data/VCF/novaseq/manta+lumpy+delly_DNA17-06167.merged500pb.DEL.ONLY.vcf"; } > pacbio+novaseq_DNA17-06167.DEL.fof
+
+SURVIVOR merge pacbio+novaseq_DNA17-06167.DEL.fof 500 1 1 0 0 20 pacbio+novaseq_DNA17-06167.DEL.vcf
+
+{ echo "/ifs/home/kevin/WGS/data/VCF/pbsv2/hg38.DNA17-06168.pbsv2.DEL.ONLY.vcf";
+  echo "/ifs/home/kevin/WGS/data/VCF/novaseq/manta+lumpy+delly_DNA17-06168.merged500pb.DEL.ONLY.vcf"; } > pacbio+novaseq_DNA17-06168.DEL.fof
+
+SURVIVOR merge pacbio+novaseq_DNA17-06168.DEL.fof 500 1 1 0 0 20 pacbio+novaseq_DNA17-06168.DEL.vcf
+
+###### DUPLICATION
+
+{ echo "/ifs/home/kevin/WGS/data/VCF/pbsv2/hg38.DNA17-06166.pbsv2.DUP.ONLY.vcf";
+  echo "/ifs/home/kevin/WGS/data/VCF/novaseq/manta+lumpy+delly_DNA17-06166.merged500pb.ALL.INS.vcf"; } > pacbio+novaseq_DNA17-06166.DUP.fof
+
+SURVIVOR merge pacbio+novaseq_DNA17-06166.DUP.fof 500 1 1 0 0 20 pacbio+novaseq_DNA17-06166.DUP.vcf
+
+{ echo "/ifs/home/kevin/WGS/data/VCF/pbsv2/hg38.DNA17-06167.pbsv2.DUP.ONLY.vcf";
+  echo "/ifs/home/kevin/WGS/data/VCF/novaseq/manta+lumpy+delly_DNA17-06167.merged500pb.ALL.INS.vcf"; } > pacbio+novaseq_DNA17-06167.DUP.fof
+
+SURVIVOR merge pacbio+novaseq_DNA17-06167.DUP.fof 500 1 1 0 0 20 pacbio+novaseq_DNA17-06167.DUP.vcf
+
+{ echo "/ifs/home/kevin/WGS/data/VCF/pbsv2/hg38.DNA17-06168.pbsv2.DUP.ONLY.vcf";
+  echo "/ifs/home/kevin/WGS/data/VCF/novaseq/manta+lumpy+delly_DNA17-06168.merged500pb.ALL.INS.vcf"; } > pacbio+novaseq_DNA17-06168.DUP.fof
+
+SURVIVOR merge pacbio+novaseq_DNA17-06168.DUP.fof 500 1 1 0 0 20 pacbio+novaseq_DNA17-06168.DUP.vcf
+```
+
 Sort and index VCF to be ready for filtering and annotation :
 ```
-bcftools sort -O z manta+lumpy+delly.merged500bp.DEL.ONLY.vcf.gz -o manta+lumpy+delly.merged500bp.DEL.ONLY.sorted.vcf.gz
-bcftools index manta+lumpy+delly.merged500bp.DEL.ONLY.sorted.vcf.gz
-bcftools sort -O z manta+lumpy+delly.merged500bp.DUP.only.vcf.gz -o manta+lumpy+delly.merged500bp.DUP.ONLY.sorted.vcf.gz
-bcftools index manta+lumpy+delly.merged500bp.DUP.ONLY.sorted.vcf.gz
+#### Files have to be bgzipped, sorted and indexed
+bcftools sort -O z BvB41_child_xAtlas.recode.vcf.gz -o BvB41_child_xAtlas.recode.sorted.vcf.gz
+bcftools sort -O z BvB41_father_xAtlas.recode.vcf.gz -o BvB41_father_xAtlas.recode.sorted.vcf.gz
+bcftools sort -O z BvB41_mother_xAtlas.recode.vcf.gz -o BvB41_mother_xAtlas.recode.sorted.vcf.gz
 
-bcftools index IlluminaSNV/calling-110918/BvB41_child.haplotypecaller.vcf.gz
+12:42:26 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools index BvB41_child_xAtlas.recode.sorted.vcf.gz
+12:43:26 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools index BvB41_father_xAtlas.recode.sorted.vcf.gz
+12:43:36 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools index BvB41_mother_xAtlas.recode.sorted.vcf.gz
 
-bcftools sort -O z PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.vcf.gz -o PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.sorted.vcf.gz
-bcftools index PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.sorted.vcf.gz
-bcftools sort -O z PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.vcf.gz -o PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.sorted.vcf.gz
-bcftools index PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DUP.ONLY.sorted.vcf.gz
+12:46:33 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06166.DEL.vcf.gz -o pacbio+novaseq_DNA17-06166.DEL.sorted.vcf.gz
+12:46:33 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06167.DEL.vcf.gz -o pacbio+novaseq_DNA17-06167.DEL.sorted.vcf.gz
+12:46:33 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06168.DEL.vcf.gz -o pacbio+novaseq_DNA17-06168.DEL.sorted.vcf.gz
+
+12:47:21 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06166.DUP.vcf.gz -o pacbio+novaseq_DNA17-06166.DUP.sorted.vcf.gz
+12:47:21 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06167.DUP.vcf.gz -o pacbio+novaseq_DNA17-06167.DUP.sorted.vcf.gz
+12:47:21 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06168.DUP.vcf.gz -o pacbio+novaseq_DNA17-06168.DUP.sorted.vcf.gz
+
+for i in *.sorted.vcf.gz ; do bcftools index $i ; done
 ```
 
 Filter and annotate VCF by AnnotSV :
 
 ```
+##### DELETION
+
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06166.DEL.sorted.vcf.gz -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DEL -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.vcf.gz
+
 ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/AnnotSV/manta+lumpy+delly.merged500bp.DEL.ONLY.sorted.vcf -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir ~/WGS/data/AnnotSV/ -vcfFiles ~/WGS/data/AnnotSV/BvB41_child.haplotypecaller.vcf
 
 ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/AnnotSV/PacBio+Illumina.merged500bp.SURVIVOR-1.0.4.DEL.ONLY.sorted.vcf -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir ~/WGS/data/AnnotSV/ -vcfFiles ~/WGS/data/AnnotSV/BvB41_child.haplotypecaller.vcf
