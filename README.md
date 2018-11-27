@@ -10,6 +10,12 @@ We sequence this trio with Illumina Novaseq, 10x Genomics Chromium, PacBio, Oxfo
 
 ### Protocol
 
+### Requirements
+
+bedtools 2.27.1 (or higher) is needed for AnnotSV, since they fixed an unfortunate bug.
+AnnotSV 1.2
+SURVIVOR 1.0.5
+
 #### NGS data processing
 
 PacBio data have been aligned with minimap2 in hg38, SV calling have been made with pbsv2 and SNV calling with samtools mpileup.
@@ -23,9 +29,12 @@ Get clean SNV calling from Illumina Novaseq WGS and create special selection for
 { ~/WGS/jobs }-> sbatch xatlas_mother.job
 
 ### DUPLICATION process
-17:01:02 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view --output-type b --include 'FMT/GT="0/1" && ((FMT/VR)/(FMT/DP)>=0.611)' BvB41_child_xAtlas.recode.sorted.vcf.gz >  BvB41_child_xAtlas.recode.sorted.DUP.vcf.gz
-17:03:04 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view --output-type b --include 'FMT/GT="0/1" && ((FMT/VR)/(FMT/DP)>=0.611)' BvB41_father_xAtlas.recode.sorted.vcf.gz >  BvB41_father_xAtlas.recode.sorted.DUP.vcf.gz
-17:04:50 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view --output-type b --include 'FMT/GT="0/1" && ((FMT/VR)/(FMT/DP)>=0.611)' BvB41_mother_xAtlas.recode.sorted.vcf.gz >  BvB41_mother_xAtlas.recode.sorted.DUP.vcf.gz
+17:01:02 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view --output-type v --include 'FMT/GT="0/1" && ((FMT/VR)/(FMT/DP)>=0.611)' BvB41_child_xAtlas.recode.sorted.vcf.gz >  BvB41_child_xAtlas.recode.sorted.DUP.vcf
+17:03:04 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view --output-type v --include 'FMT/GT="0/1" && ((FMT/VR)/(FMT/DP)>=0.611)' BvB41_father_xAtlas.recode.sorted.vcf.gz >  BvB41_father_xAtlas.recode.sorted.DUP.vcf
+17:04:50 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view --output-type v --include 'FMT/GT="0/1" && ((FMT/VR)/(FMT/DP)>=0.611)' BvB41_mother_xAtlas.recode.sorted.vcf.gz >  BvB41_mother_xAtlas.recode.sorted.DUP.vcf
+
+for i in *DUP.vcf ; do bgzip $i ; done
+
 ```
 
 Split by sample all SV vcf :
@@ -187,11 +196,11 @@ Filter and annotate VCF by AnnotSV :
 
 ##### DUPLICATION
 
-./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06166.DUP.sorted.vcf.gz -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.DUP.vcf.gz
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06166.DUP.sorted.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.DUP.vcf.gz
 
-./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06167.DUP.sorted.vcf.gz -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_father_xAtlas.recode.sorted.DUP.vcf.gz
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06167.DUP.sorted.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_father_xAtlas.recode.sorted.DUP.vcf.gz
 
-./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06168.DUP.sorted.vcf.gz -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.DUP.vcf.gz
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06168.DUP.sorted.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.DUP.vcf.gz
 ```
 
 Number of heterozygous vs homozygous variant SNV :
