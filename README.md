@@ -292,10 +292,12 @@ bcftools index ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DEL.sorted.filt
 ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DEL.sorted.filtered.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DEL -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.vcf.gz
 
 ##### DUPLICATION
+12:13:11 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> bcftools view ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DUP.sorted.vcf.gz -T ~/WGS/data/VCF/pacbio-novaseq/DUP/good_dup_cnv_chr.txt | grep -v "SUPP_VEC=0" > ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DUP.sorted.filtered.vcf
+12:13:29 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> bgzip ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DUP.sorted.filtered.vcf
+12:14:06 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> bcftools index ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DUP.sorted.filtered.vcf.gz
 
+12:17:00 kevin::login02 { ~ }-> ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DUP.sorted.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.DUP.vcf.gz
 ```
-
-
 
 #### Haplotype by read and pedigree based phasing and genotype
 
