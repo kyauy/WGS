@@ -212,9 +212,10 @@ Add SV size to annotated tsv from AnnotSV, yet respect excel format for analysis
 16:43:13 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06166.DUP.sorted.annotated.tsv >> child_INS_SVsize.tsv
 16:43:24 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.tsv >> father_INS_SVsize.tsv                16:43:55 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.tsv >> mother_INS_SVsize.tsv
 
-17:09:18 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> paste -d '\t' pacbio+novaseq_DNA17-06166.DUP.sorted.annotated.tsv child_INS_SVsize.tsv | cut -f-3,5-6,9- > pacbio+novaseq_DNA17-06166.DUP.sorted.annotated.SVsize.tsv
-17:10:08 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> paste -d '\t' pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.tsv father_INS_SVsize.tsv | cut -f-3,5-6,9- > pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.SVsize.tsv
-17:10:25 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> paste -d '\t' pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.tsv mother_INS_SVsize.tsv | cut -f-3,5-6,9- > pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.SVsize.tsv
+17:10:43 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> paste -d '\t' pacbio+novaseq_DNA17-06166.DUP.sorted.annotated.tsv child_INS_SVsize.tsv | cut -f-3,5-6,9- | grep -v "split" > pacbio+novaseq_DNA17-06166.DUP.sorted.annotated.fullonly.SVsize.tsv
+17:24:46 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> paste -d '\t' pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.tsv father_INS_SVsize.tsv | cut -f-3,5-6,9- | grep -v "split" > pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.fullonly.SVsize.tsv
+17:25:11 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> paste -d '\t' pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.tsv mother_INS_SVsize.tsv | cut -f-3,5-6,9- | grep -v "split" > pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.fullonly.SVsize.tsv
+
 ```
 
 
@@ -252,6 +253,48 @@ Number of heterozygous vs homozygous variant SNV :
 [W::bcf_hdr_check_sanity] PL should be declared as Number=G
 4908878
 ```
+
+Merge sample for WGS Trio mode analysis, sort and index :
+
+```
+###### DELETION Trio
+{ echo "/ifs/home/kevin/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06166.DEL.vcf";
+  echo "/ifs/home/kevin/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06167.DEL.vcf";
+  echo "/ifs/home/kevin/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06168.DEL.vcf";} > pacbio+novaseq_trio.DEL.fof
+
+SURVIVOR merge pacbio+novaseq_trio.DEL.fof 500 1 1 0 0 20 pacbio+novaseq_trio.DEL.vcf
+bgzip pacbio+novaseq_trio.DEL.vcf
+bcftools sort -O z pacbio+novaseq_trio.DEL.vcf.gz -o pacbio+novaseq_trio.DEL.sorted.vcf.gz
+bcftools index pacbio+novaseq_trio.DEL.sorted.vcf.gz
+
+###### DUPLICATION Trio
+{ echo "/ifs/home/kevin/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06166.DUP.vcf";
+  echo "/ifs/home/kevin/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06167.DUP.vcf";
+  echo "/ifs/home/kevin/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06168.DUP.vcf";} > pacbio+novaseq_trio.DUP.fof
+
+SURVIVOR merge pacbio+novaseq_trio.DUP.fof 500 1 1 0 0 20 pacbio+novaseq_trio.DUP.vcf
+bgzip pacbio+novaseq_trio.DUP.vcf
+bcftools sort -O z pacbio+novaseq_trio.DUP.vcf.gz -o pacbio+novaseq_trio.DUP.sorted.vcf.gz
+bcftools index pacbio+novaseq_trio.DUP.sorted.vcf.gz
+```
+
+Filter Trio with only good CNV :
+
+```
+###### DELETION
+### ADD CHR to chromosome number as AnnotSV removed them
+10:49:58 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DEL }-> sed 's/^/chr/g' good_del_cnv.txt > good_del_cnv_chr.txt
+
+10:55:50 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools view ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DEL.sorted.vcf.gz -T ~/WGS/data/VCF/pacbio-novaseq/DEL/good_del_cnv_chr.txt | grep -v "SUPP_VEC=0" > ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DEL.sorted.filtered.vcf
+bgzip ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DEL.sorted.filtered.vcf
+bcftools index ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DEL.sorted.filtered.vcf.gz
+
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DEL.sorted.filtered.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DEL -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.vcf.gz
+
+##### DUPLICATION
+
+```
+
 
 
 #### Haplotype by read and pedigree based phasing and genotype
