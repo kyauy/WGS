@@ -296,7 +296,18 @@ bcftools index ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DEL.sorted.filt
 12:13:29 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> bgzip ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DUP.sorted.filtered.vcf
 12:14:06 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> bcftools index ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DUP.sorted.filtered.vcf.gz
 
-12:17:00 kevin::login02 { ~ }-> ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DUP.sorted.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.DUP.vcf.gz
+12:17:00 kevin::login02 { ~ }-> ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DUP.sorted.filtered.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.DUP.vcf.gz
+```
+
+Bcftools filter for de novo is not working (don't know why), so I did it manually again
+```
+10:10:49 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools view --output-type v  --include 'INFO/SUPP_VEC="100"' pacbio+novaseq_trio.DUP.sorted.vcf.gz > pacbio+novaseq_trio.DUP.sorted.denovo.vcf
+10:11:13 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bgzip pacbio+novaseq_trio.DUP.sorted.denovo.vcf
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DUP.sorted.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.DUP.vcf.gz
+
+15:51:31 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> echo "SVSize" > denovo_INS_SVsize.tsv
+15:51:38 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_trio.DUP.sorted.denovo.annotated.tsv >> denovo_INS_SVsize.tsv
+15:52:06 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> paste -d '\t' pacbio+novaseq_trio.DUP.sorted.denovo.annotated.tsv  denovo_INS_SVsize.tsv | cut -f-3,5-6,9- > pacbio+novaseq_trio.DUP.sorted.denovo.annotated.SVSize.tsv
 ```
 
 #### Haplotype by read and pedigree based phasing and genotype
