@@ -29,12 +29,21 @@ Get clean SNV calling from Illumina Novaseq WGS and create special selection for
 { ~/WGS/jobs }-> sbatch xatlas_mother.job
 
 ### DUPLICATION process
+# VCF with heterozygous SNV & AB >= 0.611
 17:01:02 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view --output-type v --include 'FMT/GT="0/1" && ((FMT/VR)/(FMT/DP)>=0.611)' BvB41_child_xAtlas.recode.sorted.vcf.gz >  BvB41_child_xAtlas.recode.sorted.DUP.vcf
 17:03:04 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view --output-type v --include 'FMT/GT="0/1" && ((FMT/VR)/(FMT/DP)>=0.611)' BvB41_father_xAtlas.recode.sorted.vcf.gz >  BvB41_father_xAtlas.recode.sorted.DUP.vcf
 17:04:50 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view --output-type v --include 'FMT/GT="0/1" && ((FMT/VR)/(FMT/DP)>=0.611)' BvB41_mother_xAtlas.recode.sorted.vcf.gz >  BvB41_mother_xAtlas.recode.sorted.DUP.vcf
 
+# VCF with heterozygous SNV & AB [0.45-0.55]
+bcftools view --output-type v --include 'FMT/GT="0/1" && ((FMT/VR)/(FMT/DP)>=0.45) && ((FMT/VR)/(FMT/DP)<=0.55)' BvB41_child_xAtlas.recode.sorted.vcf.gz > BvB41_child_xAtlas.recode.sorted.notDUP.vcf
+sed -i 's/\t\/ifs/\tnotdup/g' BvB41_child_xAtlas.recode.sorted.notDUP.vcf
+bcftools view --output-type v --include 'FMT/GT="0/1" && ((FMT/VR)/(FMT/DP)>=0.45) && ((FMT/VR)/(FMT/DP)<=0.55)' BvB41_father_xAtlas.recode.sorted.vcf.gz > BvB41_father_xAtlas.recode.sorted.notDUP.vcf
+sed -i 's/\t\/ifs/\tnotdup/g' BvB41_father_xAtlas.recode.sorted.notDUP.vcf
+bcftools view --output-type v --include 'FMT/GT="0/1" && ((FMT/VR)/(FMT/DP)>=0.45) && ((FMT/VR)/(FMT/DP)<=0.55)' BvB41_mother_xAtlas.recode.sorted.vcf.gz > BvB41_mother_xAtlas.recode.sorted.notDUP.vcf
+sed -i 's/\t\/ifs/\tnotdup/g' BvB41_mother_xAtlas.recode.sorted.notDUP.vcf
+### BGZIP all
 for i in *DUP.vcf ; do bgzip $i ; done
-
+for i in *notDUP.vcf ; do bgzip $i ; done
 ```
 
 Split by sample all SV vcf :
@@ -172,6 +181,10 @@ bcftools sort -O z BvB41_mother_xAtlas.recode.vcf.gz -o BvB41_mother_xAtlas.reco
 17:06:16 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools index BvB41_father_xAtlas.recode.sorted.DUP.vcf.gz
 17:06:29 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools index BvB41_mother_xAtlas.recode.sorted.DUP.vcf.gz
 
+14:58:52 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools index BvB41_child_xAtlas.recode.sorted.notDUP.vcf.gz
+15:01:16 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools index BvB41_father_xAtlas.recode.sorted.notDUP.vcf.gz
+15:01:23 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools index BvB41_mother_xAtlas.recode.sorted.notDUP.vcf.gz
+
 12:46:33 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06166.DEL.vcf.gz -o pacbio+novaseq_DNA17-06166.DEL.sorted.vcf.gz
 12:46:33 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06167.DEL.vcf.gz -o pacbio+novaseq_DNA17-06167.DEL.sorted.vcf.gz
 12:46:33 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06168.DEL.vcf.gz -o pacbio+novaseq_DNA17-06168.DEL.sorted.vcf.gz
@@ -188,33 +201,47 @@ Filter and annotate VCF by AnnotSV :
 ```
 ##### DELETION
 
-./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06166.DEL.sorted.vcf.gz -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DEL -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.vcf.gz
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06166.DEL.sorted.vcf.gz -genomeBuild GRCh38 -typeOfAnnotation full -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DEL -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.vcf.gz
 
-./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06167.DEL.sorted.vcf.gz -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DEL -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_father_xAtlas.recode.sorted.vcf.gz
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06167.DEL.sorted.vcf.gz -genomeBuild GRCh38 -typeOfAnnotation full -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DEL -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_father_xAtlas.recode.sorted.vcf.gz
 
-./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06168.DEL.sorted.vcf.gz -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DEL -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.vcf.gz
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06168.DEL.sorted.vcf.gz -genomeBuild GRCh38 -typeOfAnnotation full  -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DEL -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.vcf.gz
 
 ##### DUPLICATION
 
-./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06166.DUP.sorted.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.DUP.vcf.gz
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06166.DUP.sorted.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP2 -vcfFiles "~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.DUP.vcf.gz ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.notDUP.vcf.gz"
 
-./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06167.DUP.sorted.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_father_xAtlas.recode.sorted.DUP.vcf.gz
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06167.DUP.sorted.vcf.gz -genomeBuild GRCh38 -typeOfAnnotation full -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP2 -vcfFiles "~/WGS/data/VCF/xatlasSNV/BvB41_father_xAtlas.recode.sorted.DUP.vcf.gz ~/WGS/data/VCF/xatlasSNV/BvB41_father_xAtlas.recode.sorted.notDUP.vcf.gz"
 
-./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06168.DUP.sorted.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.DUP.vcf.gz
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06168.DUP.sorted.vcf.gz -genomeBuild GRCh38 -typeOfAnnotation full -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP2 -vcfFiles "~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.DUP.vcf.gz ~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.DUP.vcf.gz"
 ```
 
 Add SV size to annotated tsv from AnnotSV, yet respect excel format for analysis used for DELETION
 
 ```
+### DUP
 16:40:54 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> echo "SVSize" > child_INS_SVsize.tsv
 16:43:02 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> echo "SVSize" > father_INS_SVsize.tsv
 16:43:09 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> echo "SVSize" > child_INS_SVsize.tsv
 16:43:13 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06166.DUP.sorted.annotated.tsv >> child_INS_SVsize.tsv
-16:43:24 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.tsv >> father_INS_SVsize.tsv                16:43:55 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.tsv >> mother_INS_SVsize.tsv
+16:43:24 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.tsv >> father_INS_SVsize.tsv
+16:43:55 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.tsv >> mother_INS_SVsize.tsv
 
 17:10:43 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> paste -d '\t' pacbio+novaseq_DNA17-06166.DUP.sorted.annotated.tsv child_INS_SVsize.tsv | cut -f-3,5-6,9- | grep -v "split" > pacbio+novaseq_DNA17-06166.DUP.sorted.annotated.fullonly.SVsize.tsv
 17:24:46 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> paste -d '\t' pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.tsv father_INS_SVsize.tsv | cut -f-3,5-6,9- | grep -v "split" > pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.fullonly.SVsize.tsv
 17:25:11 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> paste -d '\t' pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.tsv mother_INS_SVsize.tsv | cut -f-3,5-6,9- | grep -v "split" > pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.fullonly.SVsize.tsv
+
+### DUP2
+16:19:21 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> echo "SVSize" > child_INS_SVsize.tsv
+16:19:23 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> echo "SVSize" > father_INS_SVsize.tsv
+16:19:30 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> echo "SVSize" > child_INS_SVsize.tsv
+16:19:36 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06166.DUP.sorted.annotated.tsv >> child_INS_SVsize.tsv
+16:19:42 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.tsv >> father_INS_SVsize.tsv
+16:19:47 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.tsv >> mother_INS_SVsize.tsv
+
+16:36:43 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> paste -d '\t' pacbio+novaseq_DNA17-06166.DUP.sorted.annotated.tsv child_INS_SVsize.tsv | cut -f-3,5-6,9-15,18-  | grep -v "split"  > pacbio+novaseq_DNA17-06166.DUP.sorted.annotated.fullonly.SVsize.tsv
+16:39:08 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> paste -d '\t' pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.tsv father_INS_SVsize.tsv | cut -f-3,5-6,9-15,18-  | grep -v "split"   > pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.fullonly.SVsize.tsv
+16:39:36 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> paste -d '\t' pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.tsv mother_INS_SVsize.tsv | cut -f-3,5-6,9-15,18-  | grep -v "split" > pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.fullonly.SVsize.tsv
 
 ```
 
