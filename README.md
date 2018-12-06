@@ -213,7 +213,7 @@ Filter and annotate VCF by AnnotSV :
 
 ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06167.DUP.sorted.vcf.gz -genomeBuild GRCh38 -typeOfAnnotation full -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP2 -vcfFiles "~/WGS/data/VCF/xatlasSNV/BvB41_father_xAtlas.recode.sorted.DUP.vcf.gz ~/WGS/data/VCF/xatlasSNV/BvB41_father_xAtlas.recode.sorted.notDUP.vcf.gz"
 
-./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06168.DUP.sorted.vcf.gz -genomeBuild GRCh38 -typeOfAnnotation full -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP2 -vcfFiles "~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.DUP.vcf.gz ~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.DUP.vcf.gz"
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06168.DUP.sorted.vcf.gz -genomeBuild GRCh38 -typeOfAnnotation full -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP2 -vcfFiles "~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.DUP.vcf.gz ~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.notDUP.vcf.gz"
 ```
 
 Add SV size to annotated tsv from AnnotSV, yet respect excel format for analysis used for DELETION
@@ -222,7 +222,7 @@ Add SV size to annotated tsv from AnnotSV, yet respect excel format for analysis
 ### DUP
 16:40:54 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> echo "SVSize" > child_INS_SVsize.tsv
 16:43:02 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> echo "SVSize" > father_INS_SVsize.tsv
-16:43:09 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> echo "SVSize" > child_INS_SVsize.tsv
+16:43:09 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> echo "SVSize" > mother_INS_SVsize.tsv
 16:43:13 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06166.DUP.sorted.annotated.tsv >> child_INS_SVsize.tsv
 16:43:24 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.tsv >> father_INS_SVsize.tsv
 16:43:55 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.tsv >> mother_INS_SVsize.tsv
@@ -234,7 +234,7 @@ Add SV size to annotated tsv from AnnotSV, yet respect excel format for analysis
 ### DUP2
 16:19:21 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> echo "SVSize" > child_INS_SVsize.tsv
 16:19:23 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> echo "SVSize" > father_INS_SVsize.tsv
-16:19:30 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> echo "SVSize" > child_INS_SVsize.tsv
+16:19:30 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> echo "SVSize" > mother_INS_SVsize.tsv
 16:19:36 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06166.DUP.sorted.annotated.tsv >> child_INS_SVsize.tsv
 16:19:42 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06167.DUP.sorted.annotated.tsv >> father_INS_SVsize.tsv
 16:19:47 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_DNA17-06168.DUP.sorted.annotated.tsv >> mother_INS_SVsize.tsv
