@@ -281,6 +281,29 @@ Number of heterozygous vs homozygous variant SNV :
 4908878
 ```
 
+Number of duplicated heterozygous vs non duplicated heterzyogous variants :
+
+```
+11:45:38 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view BvB41_child_xAtlas.recode.sorted.DUP.vcf.gz | grep -v "#" | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+343871
+11:45:45 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view BvB41_child_xAtlas.recode.sorted.notDUP.vcf.gz | grep -v "#" | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+1014460
+11:45:58 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view BvB41_father_xAtlas.recode.sorted.DUP.vcf.gz | grep -v "#" | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+347470
+11:47:48 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view BvB41_father_xAtlas.recode.sorted.notDUP.vcf.gz | grep -v "#" | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+1011516
+11:48:00 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view BvB41_mother_xAtlas.recode.sorted.DUP.vcf.gz | grep -v "#" | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+362311
+11:48:11 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view BvB41_mother_xAtlas.recode.sorted.notDUP.vcf.gz | grep -v "#" | wc -l
+[W::bcf_hdr_check_sanity] PL should be declared as Number=G
+1008838
+```
+
 Merge sample for WGS Trio mode analysis, sort and index :
 
 ```
