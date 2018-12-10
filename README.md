@@ -94,6 +94,27 @@ echo "/ifs/home/kevin/WGS/data/VCF/novaseq/delly/hg38.DNA17-06168.delly.vcf"; } 
 SURVIVOR merge manta+lumpy+delly_DNA17-06168.fof 500 1 1 0 0 20 manta+lumpy+delly_DNA17-06168.merged500pb.vcf
 ```
 
+#### SNVs comparative processing
+
+SNV calling were made by Longshot for PacBio and xAtlas for Novaseq.
+
+
+Clean VCF from weird variants
+```
+for i in *.vcf; do grep "#" $i > $(basename "$i" | cut -d. -f1).clean.vcf ; grep -f /ifs/data/research/projects/kevin/comparator/chromosomelist.txt  $i | awk -F "\t" '$4 =="A" || $4 =="T" ||$4 =="G" || $4 =="C" {print $0}' >> $(basename "$i" | cut -d. -f1).clean.vcf ; done
+
+```
+
+Launch Variant Comparator for each sample
+```
+java -cp '/ifs/software/inhouse/VariantComparator/PRODUCTION/lib/*':'/ifs/software/inhouse/VariantComparator/PRODUCTION/config/' -Dspring.profiles.active=TURBO org.umcn.gen.variantcomparator.VariantComparator -in /ifs/data/research/projects/kevin/comparator/xatlas_longshot_child.txt -mode exact
+
+java -cp '/ifs/software/inhouse/VariantComparator/PRODUCTION/lib/*':'/ifs/software/inhouse/VariantComparator/PRODUCTION/config/' -Dspring.profiles.active=TURBO org.umcn.gen.variantcomparator.VariantComparator -in /ifs/data/research/projects/kevin/comparator/xatlas_longshot_father.txt -mode exact
+
+java -cp '/ifs/software/inhouse/VariantComparator/PRODUCTION/lib/*':'/ifs/software/inhouse/VariantComparator/PRODUCTION/config/' -Dspring.profiles.active=TURBO org.umcn.gen.variantcomparator.VariantComparator -in /ifs/data/research/projects/kevin/comparator/xatlas_longshot_mother.txt -mode exact
+```
+
+
 #### CNVs comparative processing
 
 According to CLAMMS, deletions must satisfy no heterozygous SNPs and at least one homozygous SNP are called in the CNV region.
@@ -353,11 +374,11 @@ Bcftools filter for de novo is not working (don't know why), so I did it manuall
 ```
 10:10:49 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools view --output-type v  --include 'INFO/SUPP_VEC="100"' pacbio+novaseq_trio.DUP.sorted.vcf.gz > pacbio+novaseq_trio.DUP.sorted.denovo.vcf
 10:11:13 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bgzip pacbio+novaseq_trio.DUP.sorted.denovo.vcf
-./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DUP.sorted.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.DUP.vcf.gz
+./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DUP.sorted.denovo.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP2 -vcfFiles "~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.DUP.vcf.gz  ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.notDUP.vcf.gz"
 
-15:51:31 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> echo "SVSize" > denovo_INS_SVsize.tsv
-15:51:38 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_trio.DUP.sorted.denovo.annotated.tsv >> denovo_INS_SVsize.tsv
-15:52:06 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP }-> paste -d '\t' pacbio+novaseq_trio.DUP.sorted.denovo.annotated.tsv  denovo_INS_SVsize.tsv | cut -f-3,5-6,9- > pacbio+novaseq_trio.DUP.sorted.denovo.annotated.SVSize.tsv
+15:51:31 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> echo "SVSize" > denovo_INS_SVsize.tsv
+15:51:38 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> grep -o -P '(?<=AVGLEN\=).*(?=\;SVTYPE)' pacbio+novaseq_trio.DUP.sorted.denovo.annotated.tsv >> denovo_INS_SVsize.tsv
+15:52:06 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DUP2 }-> paste -d '\t' pacbio+novaseq_trio.DUP.sorted.denovo.annotated.tsv  denovo_INS_SVsize.tsv | cut -f-3,5-6,9- > pacbio+novaseq_trio.DUP.sorted.denovo.annotated.SVSize.tsv
 ```
 
 #### Haplotype by read and pedigree based phasing and genotype
