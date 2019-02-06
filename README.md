@@ -21,6 +21,13 @@ SURVIVOR 1.0.5
 PacBio data have been aligned with minimap2 in hg38, SV calling have been made with pbsv2 and SNV calling with samtools mpileup.
 Illumina data have been aligned with BWA-mem in hg38, SV calling have been made with Manta, Lumpy and Delly and SNV calling have been made with xAtlas.
 
+Bionano processing :
+```
+# Unpack all files
+10:56:56 kevin::login04 { /ifs/data/research/projects/kevin/bionano_hg38 }-> for i in * ; do test -d "$i" || continue ; tar -C "$i" -xzf "$i"/pipeline_results.tar.gz ; done
+
+```
+
 Get clean SNV calling from Illumina Novaseq WGS and create special selection for DUP filtering :
 ```
 #### BATCH
@@ -107,13 +114,111 @@ for i in *.vcf; do grep "#" $i > $(basename "$i" | cut -d. -f1).clean.vcf ; grep
 
 Launch Variant Comparator for each sample
 ```
+#### xAtlas first
 java -cp '/ifs/software/inhouse/VariantComparator/PRODUCTION/lib/*':'/ifs/software/inhouse/VariantComparator/PRODUCTION/config/' -Dspring.profiles.active=TURBO org.umcn.gen.variantcomparator.VariantComparator -in /ifs/data/research/projects/kevin/comparator/xatlas_longshot_child.txt -mode exact
 
 java -cp '/ifs/software/inhouse/VariantComparator/PRODUCTION/lib/*':'/ifs/software/inhouse/VariantComparator/PRODUCTION/config/' -Dspring.profiles.active=TURBO org.umcn.gen.variantcomparator.VariantComparator -in /ifs/data/research/projects/kevin/comparator/xatlas_longshot_father.txt -mode exact
 
 java -cp '/ifs/software/inhouse/VariantComparator/PRODUCTION/lib/*':'/ifs/software/inhouse/VariantComparator/PRODUCTION/config/' -Dspring.profiles.active=TURBO org.umcn.gen.variantcomparator.VariantComparator -in /ifs/data/research/projects/kevin/comparator/xatlas_longshot_mother.txt -mode exact
+
+### Longshot first
+java -cp '/ifs/software/inhouse/VariantComparator/PRODUCTION/lib/*':'/ifs/software/inhouse/VariantComparator/PRODUCTION/config/' -Dspring.profiles.active=TURBO org.umcn.gen.variantcomparator.VariantComparator -in /ifs/data/research/projects/kevin/comparator/longshot_xatlas_child.txt -mode exact
+
+java -cp '/ifs/software/inhouse/VariantComparator/PRODUCTION/lib/*':'/ifs/software/inhouse/VariantComparator/PRODUCTION/config/' -Dspring.profiles.active=TURBO org.umcn.gen.variantcomparator.VariantComparator -in /ifs/data/research/projects/kevin/comparator/longshot_xatlas_father.txt -mode exact
+
+java -cp '/ifs/software/inhouse/VariantComparator/PRODUCTION/lib/*':'/ifs/software/inhouse/VariantComparator/PRODUCTION/config/' -Dspring.profiles.active=TURBO org.umcn.gen.variantcomparator.VariantComparator -in /ifs/data/research/projects/kevin/comparator/longshot_xatlas_mother.txt -mode exact
 ```
 
+Get clean summary file suitable for excel
+```
+11:23:30 kevin::login01 { /ifs/data/research/projects/kevin/LongShot/VariantComparator }-> sed 's/:/\t/g' DNA17-06168_longshot.clean_BvB41_mother_xAtlas.clean_summary.txt | sed 's/ (/\t/g' | sed 's/)//g' > mother_tab_summary.txt
+11:24:24 kevin::login01 { /ifs/data/research/projects/kevin/LongShot/VariantComparator }-> sed 's/:/\t/g' DNA17-06167_longshot.clean_BvB41_father_xAtlas.clean_summary.txt | sed 's/ (/\t/g' | sed 's/)//g' > father_tab_summary.txt
+11:24:45 kevin::login01 { /ifs/data/research/projects/kevin/LongShot/VariantComparator }-> sed 's/:/\t/g' DNA17-06166_longshot.clean_BvB41_child_xAtlas.clean_summary.txt | sed 's/ (/\t/g' | sed 's/)//g' > child_tab_summary.txt
+```
+
+Compute summary statistics with R of unique variant found for each technology per sample
+
+```
+########### Quality metrics
+####### xAtlas
+#### ALL
+### Common xAtlas
+17:58:45 kevin::login02 { /ifs/data/research/projects/kevin/xAtlas_SNV/VariantComparator }-> cut -f9 BvB41_child_xAtlas.clean_DNA17-06166_longshot.clean_overlap.txt | Rscript -e 'summary (as.numeric (readLines ("stdin")))'
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
+      3.00   28.00   34.00   31.74   36.00   44.00       3
+### Unique xAtlas
+17:50:43 kevin::login02 { /ifs/data/research/projects/kevin/xAtlas_SNV/VariantComparator }-> cut -f9 onlyBvB41_child_xAtlas.clean.txt | Rscript -e 'summary (as.numeric (readLines ("stdin")))'
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
+      3.00    9.00   13.00   14.75   18.00   46.00       3
+#### INDEL
+### Common xAtlas only indel
+18:13:30 kevin::login02 { /ifs/data/research/projects/kevin/xAtlas_SNV/VariantComparator }-> awk -F "\t" '!length($4)' BvB41_child_xAtlas.clean_DNA17-06166_longshot.clean_overlap.txt | cut -f9 |  Rscript -e 'summary (as.numeric (readLines ("stdin")))'
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
+      3.00   12.00   15.00   14.02   17.00   18.00       2
+
+### Unique xAtlas only indel
+18:07:41 kevin::login02 { /ifs/data/research/projects/kevin/xAtlas_SNV/VariantComparator }-> awk -F "\t" '!length($4)' onlyBvB41_child_xAtlas.clean.txt | cut -f9 |  Rscript -e 'summary (as.numeric (readLines ("stdin")))'
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
+      3.00    9.00   12.00   11.79   15.00   19.00       2
+#### SNV
+### Common xAtlas without indel
+18:13:38 kevin::login02 { /ifs/data/research/projects/kevin/xAtlas_SNV/VariantComparator }-> awk -F "\t" 'length($4)' BvB41_child_xAtlas.clean_DNA17-06166_longshot.clean_overlap.txt | cut -f9 |  Rscript -e 'summary (as.numeric (readLines ("stdin")))'
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
+      3.00   29.00   34.00   31.77   36.00   44.00       1
+
+### Unique xAtlas without indel
+18:07:00 kevin::login02 { /ifs/data/research/projects/kevin/xAtlas_SNV/VariantComparator }-> awk -F "\t" 'length($4)' onlyBvB41_child_xAtlas.clean.txt | cut -f9 |  Rscript -e 'summary (as.numeric (readLines ("stdin")))'
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
+      3.00    9.00   17.00   18.28   27.00   46.00       1
+
+####### LongShot
+#### ALL = only SNV
+### Common Longshot
+11:09:44 kevin::login01 { /ifs/data/research/projects/kevin/LongShot/VariantComparator }-> cut -f18 DNA17-06166_longshot.clean_BvB41_child_xAtlas.clean_overlap.txt | Rscript -e 'summary (as.numeric (readLines("stdin")))'
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
+      3.31   10.60   11.66   11.72   12.79   18.17       3
+
+### Unique LongShot
+17:57:35 kevin::login02 { /ifs/data/research/projects/kevin/xAtlas_SNV/VariantComparator }-> cut -f18 onlyDNA17-06166_longshot.clean.txt | Rscript -e 'summary (as.numeric (readLines("stdin")))'               Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's
+   3.20    8.85   10.91   10.79   12.56   18.18       3
+```
+
+Statistical descriptive analysis for trio
+
+```
+###### Merge Files
+### Longshot first
+echo trio_overlap > quality_trio_overlap.txt
+echo trio_onlylongshot > quality_trio_onlylongshot.txt
+echo trio_onlyxatlas > quality_trio_onlyxatlas_all.txt
+echo trio_onlyxatlas_snv > quality_trio_onlyxatlas_snv.txt
+echo trio_onlyxatlas_indel > quality_trio_onlyxatlas_indel.txt
+for i in *_xAtlas.clean_overlap.txt ; do cut -f18 $i | tail -n +2 >> quality_trio_overlap.txt ; done
+for i in onlyDNA17-0616* ; do cut -f18 $i | tail -n +2 >> quality_trio_onlylongshot.txt ; done
+for i in onlyBvB41_* ; do cut -f9 $i | tail -n +2 >> quality_trio_onlyxatlas_all.txt ; done
+for i in onlyBvB41_* ; do awk -F "\t" 'length($4)' $i | cut -f9 | tail -n +2 >> quality_trio_onlyxatlas_snv.txt ; done
+for i in onlyBvB41_* ; do awk -F "\t" '!length($4)' $i | cut -f9 | tail -n +2 >> quality_trio_onlyxatlas_indel.txt ; done
+
+paste -d "\t" quality_trio_overlap.txt quality_trio_onlylongshot.txt quality_trio_onlyxatlas_all.txt quality_trio_onlyxatlas_snv.txt quality_trio_onlyxatlas_indel.txt > quality_trio_all.txt
+
+#### xAtlas first
+
+echo trio_overlap > quality_trio_overlap.txt
+echo trio_onlylongshot > quality_trio_onlylongshot.txt
+echo trio_onlyxatlas > quality_trio_onlyxatlas_all.txt
+echo trio_onlyxatlas_snv > quality_trio_onlyxatlas_snv.txt
+echo trio_onlyxatlas_indel > quality_trio_onlyxatlas_indel.txt
+for i in *clean_overlap.txt ; do cut -f9 $i | tail -n +2 >> quality_trio_overlap.txt ; done
+for i in onlyDNA17-0616* ; do cut -f18 $i | tail -n +2 >> quality_trio_onlylongshot.txt ; done
+for i in onlyBvB41_* ; do cut -f9 $i | tail -n +2 >> quality_trio_onlyxatlas_all.txt ; done
+for i in onlyBvB41_* ; do awk -F "\t" 'length($4)' $i | cut -f9 | tail -n +2 >> quality_trio_onlyxatlas_snv.txt ; done
+for i in onlyBvB41_* ; do awk -F "\t" '!length($4)' $i | cut -f9 | tail -n +2 >> quality_trio_onlyxatlas_indel.txt ; done
+
+##### R Summary statistics
+
+for i in quality_trio* ; do echo  $(basename "$i") >> quality_trio_summary_metrics.txt ; cat $i | Rscript -e 'summary (as.numeric (readLines("stdin")))' | tail -n +2 | head -n1 >> quality_trio_summary_metrics.txt ; done
+
+```
 
 #### CNVs comparative processing
 
