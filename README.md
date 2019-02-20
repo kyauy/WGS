@@ -69,6 +69,13 @@ Split by sample all SV vcf :
 
 ## lumpy
 15:21:35 kevin::login02 { ~/WGS/data/lumpy }-> bcftools view -O v -c 1 -s BvB41_child Trio5.Lumpy.svtyper2.GTalt+GQ20.vcf > hg38.DNA17-06166.lumpy.vcf
+## manta
+15:16:18 kevin::login02 { ~/WGS/data/manta }-> bcftools view -O v -c 1 -s BvB41_child diploidSV.filtered.vcf.gz > hg38.DNA17-06166.manta.vcf
+15:19:36 kevin::login02 { ~/WGS/data/manta }-> bcftools view -O v -c 1 -s BvB41_father diploidSV.filtered.vcf.gz > hg38.DNA17-06167.manta.vcf
+15:19:55 kevin::login02 { ~/WGS/data/manta }-> bcftools view -O v -c 1 -s BvB41_mother diploidSV.filtered.vcf.gz > hg38.DNA17-06168.manta.vcf
+
+## lumpy
+15:21:35 kevin::login02 { ~/WGS/data/lumpy }-> bcftools view -O v -c 1 -s BvB41_child Trio5.Lumpy.svtyper2.GTalt+GQ20.vcf > hg38.DNA17-06166.lumpy.vcf
 15:22:00 kevin::login02 { ~/WGS/data/lumpy }-> bcftools view -O v -c 1 -s BvB41_father Trio5.Lumpy.svtyper2.GTalt+GQ20.vcf > hg38.DNA17-06167.lumpy.vcf
 15:22:11 kevin::login02 { ~/WGS/data/lumpy }-> bcftools view -O v -c 1 -s BvB41_mother Trio5.Lumpy.svtyper2.GTalt+GQ20.vcf > hg38.DNA17-06168.lumpy.vcf
 
@@ -340,6 +347,12 @@ Filter and annotate VCF by AnnotSV :
 ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06167.DUP.sorted.vcf.gz -genomeBuild GRCh38 -typeOfAnnotation full -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP2 -vcfFiles "~/WGS/data/VCF/xatlasSNV/BvB41_father_xAtlas.recode.sorted.DUP.vcf.gz ~/WGS/data/VCF/xatlasSNV/BvB41_father_xAtlas.recode.sorted.notDUP.vcf.gz"
 
 ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06168.DUP.sorted.vcf.gz -genomeBuild GRCh38 -typeOfAnnotation full -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -SVinputInfo 1 -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DUP2 -vcfFiles "~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.DUP.vcf.gz ~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.notDUP.vcf.gz"
+
+##### For others trio
+
+AnnotSV -SVinputFile /ifs/data/research/projects/marcos/PacBio_deNovo/data/FromAaron/GRCh38/hg38.DNA17-06166.pbsv2.20180823.sorted.vcf -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -SVinputInfo 1 -genomeBuild GRCh38 -outputDir /ifs/data/research/projects/marcos/PacBio_deNovo/data/FromAaron/GRCh38/AnnotSV/ -vcfFiles "/ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06166_longshot.clean.renamed.reheadered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06167_longshot.clean.renamed.reheadered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06168_longshot.clean.renamed.reheadered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06463_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06464_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06467_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06468_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06469_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06470_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06575_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06576_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06577_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-07724_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-07725_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-07726_longshot.filtered.vcf.gz"
+
+for i in /ifs/data/research/projects/marcos/PacBio_deNovo/data/FromAaron/GRCh38/*DNA* ; do sh ~/WGS/AnnotSV.sh $i ; done
 ```
 
 Add SV size to annotated tsv from AnnotSV, yet respect excel format for analysis used for DELETION
@@ -458,13 +471,6 @@ Filter Trio with only good CNV :
 
 ```
 ###### DELETION
-### ADD CHR to chromosome number as AnnotSV removed them
-10:49:58 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq/DEL }-> sed 's/^/chr/g' good_del_cnv.txt > good_del_cnv_chr.txt
-
-10:55:50 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools view ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DEL.sorted.vcf.gz -T ~/WGS/data/VCF/pacbio-novaseq/DEL/good_del_cnv_chr.txt | grep -v "SUPP_VEC=0" > ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DEL.sorted.filtered.vcf
-bgzip ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DEL.sorted.filtered.vcf
-bcftools index ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DEL.sorted.filtered.vcf.gz
-
 ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_trio.DEL.sorted.filtered.vcf.gz -bedtools /ifs/home/kevin/bedtools2/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DEL -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.vcf.gz
 
 ##### DUPLICATION
