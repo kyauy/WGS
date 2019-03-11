@@ -26,6 +26,24 @@ Bionano processing :
 # Unpack all files
 10:56:56 kevin::login04 { /ifs/data/research/projects/kevin/bionano_hg38 }-> for i in * ; do test -d "$i" || continue ; tar -C "$i" -xzf "$i"/pipeline_results.tar.gz ; done
 
+# Merge the 2 enzymes by SURVIVOR
+{ echo "/ifs/data/research/projects/kevin/bionano_hg38/06166_BspQI_exp_refineFinal1_merged_filter_inversions.vcf";
+echo "/ifs/data/research/projects/kevin/bionano_hg38/06166_BssSI_exp_refineFinal1_merged_filter_inversions.vcf"; } > bionano_2enzymes_DNA17-06166.fof
+
+SURVIVOR merge bionano_2enzymes_DNA17-06166.fof 500 1 1 0 0 20 bionano_2enzymes_DNA17-06166.merged500pb.vcf
+SURVIVOR merge bionano_2enzymes_DNA17-06166.fof 1000 1 1 0 0 20 bionano_2enzymes_DNA17-06166.merged1kb.vcf
+
+# Merge the 2 enzymes by bionano SVMERGE
+# by svmerge_to_vcf.py found on bionano genomics github
+11:03:13 kevin::login01 { /ifs/data/research/projects/kevin/bionano_hg38 }-> python2 svmerge_to_vcf.py -s ../exp_refineFinal1_merged_filter_inversions_mergedSV.txt -n DNA17-06166
+
+# Compare bionano SVMERGE to SURVIVOR
+
+{ echo "/ifs/data/research/projects/kevin/bionano_hg38/exp_refineFinal1_merged_filter_inversions_mergedSV.vcf";
+echo "/ifs/data/research/projects/kevin/bionano_hg38/bionano_2enzymes_DNA17-06166.merged10kb.vcf"; } > SVMERGE_SURVIVOR_DNA17-06166.fof
+
+SURVIVOR merge SVMERGE_SURVIVOR_DNA17-06166.fof 1000 1 1 0 0 20 SVMERGE_SURVIVOR_DNA17-06166.merged1kb.vcf
+SURVIVOR merge SVMERGE_SURVIVOR_DNA17-06166.fof 10000 1 1 0 0 20 SVMERGE_SURVIVOR_DNA17-06166.merged10kb.vcf
 ```
 
 Get clean SNV calling from Illumina Novaseq WGS and create special selection for DUP filtering :
@@ -60,6 +78,9 @@ Split by sample all SV vcf :
 { ~/WGS/data/pbsv2 }-> bcftools view -s DNA17-06166 -O v -c 1  hg38.PBRT01+03+04+05+07.pbsv2.20180823.vcf > hg38.DNA17-06166.pbsv2.vcf
 { ~/WGS/data/pbsv2 }-> bcftools view -s DNA17-06167 -O v -c 1  hg38.PBRT01+03+04+05+07.pbsv2.20180823.vcf > hg38.DNA17-06167.pbsv2.vcf
 { ~/WGS/data/pbsv2 }-> bcftools view -s DNA17-06168 -O v -c 1  hg38.PBRT01+03+04+05+07.pbsv2.20180823.vcf > hg38.DNA17-06168.pbsv2.vcf
+
+## pbsv2.2
+11:44:17 kevin::login01 { /ifs/data/research/projects/marcos/PacBio_deNovo/results/Marcos/pbsv-2.2_SVcalling/call }-> bcftools view -O v -c 1 -s PBRT07-p__DNA17-06575,PBRT07-f__DNA17-06576,PBRT07-m__DNA17-06577 hg38.jointcalling.hs38d1_not_primary.noTRA.vcf > ~/WGS/data/VCF/pbsv2.2/hg38.trio7.pbsv2.2.vcf
 
 ##### Illumina
 ## manta
@@ -350,7 +371,7 @@ Filter and annotate VCF by AnnotSV :
 
 ##### For others trio
 
-AnnotSV -SVinputFile /ifs/data/research/projects/marcos/PacBio_deNovo/data/FromAaron/GRCh38/hg38.DNA17-06166.pbsv2.20180823.sorted.vcf -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -SVinputInfo 1 -genomeBuild GRCh38 -outputDir /ifs/data/research/projects/marcos/PacBio_deNovo/data/FromAaron/GRCh38/AnnotSV/ -vcfFiles "/ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06166_longshot.clean.renamed.reheadered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06167_longshot.clean.renamed.reheadered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06168_longshot.clean.renamed.reheadered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06463_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06464_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06467_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06468_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06469_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06470_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06575_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06576_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06577_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-07724_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-07725_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-07726_longshot.filtered.vcf.gz"
+AnnotSV -SVinputFile /ifs/data/research/projects/marcos/PacBio_deNovo/data/FromAaron/GRCh38/hg38.DNA17-06166.pbsv2.20180823.sorted.vcf -SVminSize 1 -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -SVinputInfo 1 -genomeBuild GRCh38 -outputDir /ifs/data/research/projects/marcos/PacBio_deNovo/data/FromAaron/GRCh38/AnnotSV/ -vcfFiles "/ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06166_longshot.clean.renamed.reheadered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06167_longshot.clean.renamed.reheadered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06168_longshot.clean.renamed.reheadered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06463_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06464_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06467_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06468_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06469_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06470_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06575_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06576_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06577_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-07724_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-07725_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-07726_longshot.filtered.vcf.gz"
 
 for i in /ifs/data/research/projects/marcos/PacBio_deNovo/data/FromAaron/GRCh38/*DNA* ; do sh ~/WGS/AnnotSV.sh $i ; done
 ```
