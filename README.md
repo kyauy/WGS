@@ -37,6 +37,11 @@ SURVIVOR merge bionano_2enzymes_DNA17-06166.fof 1000 1 1 0 0 20 bionano_2enzymes
 # by svmerge_to_vcf.py found on bionano genomics github
 11:03:13 kevin::login01 { /ifs/data/research/projects/kevin/bionano_hg38 }-> python2 svmerge_to_vcf.py -s ../exp_refineFinal1_merged_filter_inversions_mergedSV.txt -n DNA17-06166
 
+# Transform from Variant Annotation Pipeline SMAP to VCF
+# by smap_to_vcf_v2.py found in bionano genomics github
+09:29:22 kevin::login02 { /ifs/data/research/projects/kevin/bionano_hg38/smap2vcf }-> python2 smap_to_vcf_v2.py -s ../output/variants_combine_filters_vs_parents_inMoleRefine1.smap -r ../output/exp_refineFinal1_merged_r.cmap -x ../output/exp_refineFinal1_merged.xmap -n DNA17-06166_bionano_VAP -o bionano_vep_DNA17-06166
+
+
 # Compare bionano SVMERGE to SURVIVOR
 
 { echo "/ifs/data/research/projects/kevin/bionano_hg38/exp_refineFinal1_merged_filter_inversions_mergedSV.vcf";
@@ -44,6 +49,9 @@ echo "/ifs/data/research/projects/kevin/bionano_hg38/bionano_2enzymes_DNA17-0616
 
 SURVIVOR merge SVMERGE_SURVIVOR_DNA17-06166.fof 1000 1 1 0 0 20 SVMERGE_SURVIVOR_DNA17-06166.merged1kb.vcf
 SURVIVOR merge SVMERGE_SURVIVOR_DNA17-06166.fof 10000 1 1 0 0 20 SVMERGE_SURVIVOR_DNA17-06166.merged10kb.vcf
+
+# test AnnotSV
+AnnotSV -SVinputFile SVMERGE_SURVIVOR_DNA17-06166.merged10kb.vcf.gz -SVminSize 1 -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -SVinputInfo 1 -genomeBuild GRCh38 -outputDir /ifs/data/research/projects/kevin/bionano_hg38
 ```
 
 Get clean SNV calling from Illumina Novaseq WGS and create special selection for DUP filtering :
@@ -81,6 +89,13 @@ Split by sample all SV vcf :
 
 ## pbsv2.2
 11:44:17 kevin::login01 { /ifs/data/research/projects/marcos/PacBio_deNovo/results/Marcos/pbsv-2.2_SVcalling/call }-> bcftools view -O v -c 1 -s PBRT07-p__DNA17-06575,PBRT07-f__DNA17-06576,PBRT07-m__DNA17-06577 hg38.jointcalling.hs38d1_not_primary.noTRA.vcf > ~/WGS/data/VCF/pbsv2.2/hg38.trio7.pbsv2.2.vcf
+
+bcftools view -O v -c 1 -s DNA17-06166 hg38.jointcalling.allChroms.allTypes.cleanNames.vcf > ~/WGS/data/VCF/pbsv2.2/hg38.DNA17-06166.pbsv2.2.vcf
+bcftools view -O v -c 1 -s DNA17-07724 hg38.jointcalling.allChroms.allTypes.cleanNames.vcf > ~/WGS/data/VCF/pbsv2.2/hg38.DNA17-07724.pbsv2.2.vcf
+bcftools view -O v -c 1 -s DNA17-06463 hg38.jointcalling.allChroms.allTypes.cleanNames.vcf > ~/WGS/data/VCF/pbsv2.2/hg38.DNA17-06463.pbsv2.2.vcf
+bcftools view -O v -c 1 -s DNA17-06468 hg38.jointcalling.allChroms.allTypes.cleanNames.vcf > ~/WGS/data/VCF/pbsv2.2/hg38.DNA17-06468.pbsv2.2.vcf
+bcftools view -O v -c 1 -s DNA17-06575 hg38.jointcalling.allChroms.allTypes.cleanNames.vcf > ~/WGS/data/VCF/pbsv2.2/hg38.DNA17-06575.pbsv2.2.vcf
+
 
 ##### Illumina
 ## manta
@@ -256,6 +271,10 @@ Duplications at least one heterozygous SNP is called in the CNV region and the a
 Select only deletion and duplication CNV > 20pb and DP > 5 (assume that all DUP are INS) :
 (beware that there could be a chrMT and chrM problem that need to be fixed)
 ```
+################ Bionano SVMerge + SURVIVOR, 2 enzymes
+##### DELETION ALL
+bcftools view --output-type v --include 'INFO/SVTYPE == "DEL"' SVMERGE_SURVIVOR_DNA17-06166.merged10kb.vcf > hg38.DNA17-06166.bionano.DEL.ONLY.vcf
+
 ################ Pacbio pbsv2 (according to https://github.com/PacificBiosciences/pbsv)
 ###### DELETION from 20pb to 100kb
 14:01:52 kevin::login02 { ~/WGS/data/pbsv2 }-> bcftools view --output-type v --include 'INFO/SVLEN <= -20 && INFO/SVTYPE == "DEL" && DP>5 && GT="alt"' hg38.DNA17-06166.pbsv2.vcf > hg38.DNA17-06166.pbsv2.DEL.ONLY.vcf
@@ -302,6 +321,15 @@ SURVIVOR merge pacbio+novaseq_DNA17-06167.DEL.fof 500 1 1 0 0 20 pacbio+novaseq_
 
 SURVIVOR merge pacbio+novaseq_DNA17-06168.DEL.fof 500 1 1 0 0 20 pacbio+novaseq_DNA17-06168.DEL.vcf
 
+## with bionano
+
+{ echo "/ifs/home/kevin/WGS/data/VCF/pbsv2/hg38.DNA17-06166.pbsv2.DEL.ONLY.vcf";
+  echo "/ifs/home/kevin/WGS/data/VCF/bionano/hg38.DNA17-06166.bionano.DEL.ONLY.vcf";
+  echo "/ifs/home/kevin/WGS/data/VCF/novaseq/manta+lumpy+delly_DNA17-06166.merged500pb.DEL.ONLY.vcf"; } > pacbio+novaseq+bionano_DNA17-06166.DEL.fof
+
+SURVIVOR merge pacbio+novaseq+bionano_DNA17-06166.DEL.fof 500 1 1 0 0 20 pacbio+novaseq+bionano_DNA17-06166.DEL.vcf
+
+
 ###### DUPLICATION
 
 { echo "/ifs/home/kevin/WGS/data/VCF/pbsv2/hg38.DNA17-06166.pbsv2.DUP.ONLY.vcf";
@@ -343,6 +371,10 @@ bcftools sort -O z BvB41_mother_xAtlas.recode.vcf.gz -o BvB41_mother_xAtlas.reco
 12:46:33 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06167.DEL.vcf.gz -o pacbio+novaseq_DNA17-06167.DEL.sorted.vcf.gz
 12:46:33 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06168.DEL.vcf.gz -o pacbio+novaseq_DNA17-06168.DEL.sorted.vcf.gz
 
+11:30:25 kevin::login02 { ~/WGS/data/VCF/bionano }-> bgzip pacbio+novaseq+bionano_DNA17-06166.DEL.vcf
+11:33:27 kevin::login02 { ~/WGS/data/VCF/bionano }-> bcftools sort -O z pacbio+novaseq+bionano_DNA17-06166.DEL.vcf.gz -o pacbio+novaseq+bionano_DNA17-06166.DEL.sorted.vcf.gz
+
+
 12:47:21 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06166.DUP.vcf.gz -o pacbio+novaseq_DNA17-06166.DUP.sorted.vcf.gz
 12:47:21 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06167.DUP.vcf.gz -o pacbio+novaseq_DNA17-06167.DUP.sorted.vcf.gz
 12:47:21 kevin::login02 { ~/WGS/data/VCF/pacbio-novaseq }-> bcftools sort -O z pacbio+novaseq_DNA17-06168.DUP.vcf.gz -o pacbio+novaseq_DNA17-06168.DUP.sorted.vcf.gz
@@ -360,6 +392,23 @@ Filter and annotate VCF by AnnotSV :
 ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06167.DEL.sorted.vcf.gz -genomeBuild GRCh38 -typeOfAnnotation full -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DEL -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_father_xAtlas.recode.sorted.vcf.gz
 
 ./AnnotSV_1.2/bin/AnnotSV -SVinputFile ~/WGS/data/VCF/pacbio-novaseq/pacbio+novaseq_DNA17-06168.DEL.sorted.vcf.gz -genomeBuild GRCh38 -typeOfAnnotation full  -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -outputDir  ~/WGS/data/VCF/pacbio-novaseq/DEL -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_mother_xAtlas.recode.sorted.vcf.gz
+
+# with bionano
+
+AnnotSV -SVinputFile ~/WGS/data/VCF/bionano/pacbio+novaseq+bionano_DNA17-06166.DEL.sorted.vcf.gz -SVminSize 1 -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -SVinputInfo 1 -genomeBuild GRCh38 -outputDir ~/WGS/data/VCF/bionano/ -vcfFiles "/ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06166_longshot.clean.renamed.reheadered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06167_longshot.clean.renamed.reheadered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06168_longshot.clean.renamed.reheadered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06463_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06464_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06467_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06468_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06469_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06470_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06575_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06576_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06577_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-07724_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-07725_longshot.filtered.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-07726_longshot.filtered.vcf.gz"
+
+AnnotSV -SVinputFile ~/WGS/data/VCF/bionano/pacbio+novaseq+bionano_DNA17-06166.DEL.sorted.vcf.gz -SVminSize 1 -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -SVinputInfo 1 -genomeBuild GRCh38 -outputDir ~/WGS/data/VCF/bionano/ -vcfFiles ~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.vcf.gz
+
+# pbsv2.2
+AnnotSV -SVinputFile ~/WGS/data/VCF/pbsv2.2/hg38.DNA17-06166.pbsv2.2.vcf -SVminSize 1 -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -SVinputInfo 1 -genomeBuild GRCh38 -outputDir ~/WGS/data/VCF/pbsv2.2/ -vcfFiles "~/WGS/data/VCF/xatlasSNV/BvB41_child_xAtlas.recode.sorted.vcf.gz /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06166_longshot.clean.renamed.reheadered.vcf.gz"
+
+AnnotSV -SVinputFile ~/WGS/data/VCF/pbsv2.2/hg38.DNA17-07724.pbsv2.2.vcf -SVminSize 1 -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -SVinputInfo 1 -genomeBuild GRCh38 -outputDir ~/WGS/data/VCF/pbsv2.2/ -vcfFiles "/ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-07724_longshot.filtered.vcf.gz"
+
+AnnotSV -SVinputFile ~/WGS/data/VCF/pbsv2.2/hg38.DNA17-06463.pbsv2.2.vcf -SVminSize 1 -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -SVinputInfo 1 -genomeBuild GRCh38 -outputDir ~/WGS/data/VCF/pbsv2.2/ -vcfFiles "/ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06463_longshot.filtered.vcf.gz"
+
+AnnotSV -SVinputFile ~/WGS/data/VCF/pbsv2.2/hg38.DNA17-06468.pbsv2.2.vcf -SVminSize 1 -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -SVinputInfo 1 -genomeBuild GRCh38 -outputDir ~/WGS/data/VCF/pbsv2.2/ -vcfFiles "/ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06468_longshot.filtered.vcf.gz"
+
+AnnotSV -SVinputFile ~/WGS/data/VCF/pbsv2.2/hg38.DNA17-06575.pbsv2.2.vcf -SVminSize 1 -bedtools /cm/shared/apps/bioinf/bedtools/2.25.0/bin/bedtools -SVinputInfo 1 -genomeBuild GRCh38 -outputDir ~/WGS/data/VCF/pbsv2.2/ -vcfFiles "/ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06575_longshot.filtered.vcf.gz"
 
 ##### DUPLICATION
 
@@ -410,6 +459,7 @@ Number of heterozygous vs homozygous variant SNV :
 
 ```
 ####
+# xAtlas : hom / total snv = 0.369 | het / hom = 1.668
 17:25:54 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -g hom -c1  BvB41_child_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
 [W::bcf_hdr_check_sanity] PL should be declared as Number=G
 1811424
@@ -419,6 +469,17 @@ Number of heterozygous vs homozygous variant SNV :
 17:26:33 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -c1  BvB41_child_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
 [W::bcf_hdr_check_sanity] PL should be declared as Number=G
 4900187
+
+# longshot : hom/total snv = 0.396 | het / hom = 1.52
+11:11:38 kevin::login01 { ~/WGS/data/VCF/pbsv2.2 }-> bcftools view -g hom -c1 /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06166_longshot.clean.renamed.reheadered.vcf.gz  | grep -v "#" - | wc -l
+1661215
+11:12:31 kevin::login01 { ~/WGS/data/VCF/pbsv2.2 }-> bcftools view -g het -c1 /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06166_longshot.clean.renamed.reheadered.vcf.gz  | grep -v "#" - | wc -l
+2531006
+11:13:35 kevin::login01 { ~/WGS/data/VCF/pbsv2.2 }-> bcftools view -c1 /ifs/data/research/projects/erdi/pacbioSNV/results/DNA17-06166_longshot.clean.renamed.reheadered.vcf.gz  | grep -v "#" - | wc -l
+4192221
+
+
+
 ####
 17:26:55 kevin::login02 { ~/WGS/data/VCF/xatlasSNV }-> bcftools view -g hom -c1  BvB41_father_xAtlas.recode.sorted.vcf.gz | grep -v "#" - | wc -l
 [W::bcf_hdr_check_sanity] PL should be declared as Number=G
